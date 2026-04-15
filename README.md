@@ -1,3 +1,6 @@
+[Github Demo Page](https://2infinityn6eyond.github.io/DemoPage/en/)
+
+
 # LogK Homepage Demo
 
 Astro-based multilingual startup homepage for **LogK**, a product that helps users choose, delegate across, compare, and verify answers from multiple AI models.
