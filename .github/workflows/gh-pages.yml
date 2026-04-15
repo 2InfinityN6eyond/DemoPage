@@ -1,0 +1,31 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pages: write
+      id-token: write
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - run: npm install
+      - run: |
+          BASE_PATH=/DemoPage
+          SITE_URL=https://username.github.io/DemoPage
+          echo "BASE_PATH=$BASE_PATH" >> $GITHUB_ENV
+          echo "SITE_URL=$SITE_URL" >> $GITHUB_ENV
+      - run: npm run build
+      - uses: peaceiris/actions-gh-pages@v3
+        with:
+          publish_dir: ./dist
+          github_token: ${{ secrets.GITHUB_TOKEN }}
