@@ -1,0 +1,56 @@
+<svg width="980" height="980" viewBox="0 0 980 980" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="heroGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(490 490) rotate(90) scale(490)">
+      <stop stop-color="#8FEBDC" stop-opacity="0.85" />
+      <stop offset="0.45" stop-color="#34D399" stop-opacity="0.24" />
+      <stop offset="0.72" stop-color="#4F46E5" stop-opacity="0.08" />
+      <stop offset="1" stop-color="#4F46E5" stop-opacity="0" />
+    </radialGradient>
+    <linearGradient id="ringStroke" x1="160" y1="120" x2="820" y2="860" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E" stop-opacity="0.62" />
+      <stop offset="0.5" stop-color="#0EA5E9" stop-opacity="0.38" />
+      <stop offset="1" stop-color="#111827" stop-opacity="0.22" />
+    </linearGradient>
+    <filter id="softBlur" x="-120" y="-120" width="1220" height="1220" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feGaussianBlur stdDeviation="24" />
+    </filter>
+  </defs>
+
+  <circle cx="490" cy="490" r="490" fill="url(#heroGlow)" />
+  <g filter="url(#softBlur)">
+    <circle cx="490" cy="490" r="290" fill="#DFFAF4" fill-opacity="0.48" />
+  </g>
+  <circle cx="490" cy="490" r="352" stroke="url(#ringStroke)" stroke-opacity="0.42" stroke-width="2" />
+  <circle cx="490" cy="490" r="282" stroke="url(#ringStroke)" stroke-opacity="0.38" stroke-width="1.6" />
+  <circle cx="490" cy="490" r="212" stroke="url(#ringStroke)" stroke-opacity="0.26" stroke-width="1.2" />
+
+  <path
+    d="M142 606C215 451 373 338 562 338C675 338 779 378 851 442"
+    stroke="url(#ringStroke)"
+    stroke-width="3"
+    stroke-linecap="round"
+    stroke-dasharray="5 14"
+    stroke-opacity="0.54"
+  />
+  <path
+    d="M208 748C324 624 488 570 658 597C746 611 818 648 874 703"
+    stroke="url(#ringStroke)"
+    stroke-width="2.2"
+    stroke-linecap="round"
+    stroke-dasharray="4 12"
+    stroke-opacity="0.38"
+  />
+  <path
+    d="M252 226C343 188 441 173 547 184C669 197 760 246 818 313"
+    stroke="url(#ringStroke)"
+    stroke-width="2"
+    stroke-linecap="round"
+    stroke-dasharray="4 10"
+    stroke-opacity="0.32"
+  />
+
+  <circle cx="760" cy="378" r="8" fill="#0F766E" />
+  <circle cx="635" cy="612" r="10" fill="#22C55E" />
+  <circle cx="316" cy="458" r="7" fill="#0EA5E9" />
+  <circle cx="450" cy="274" r="5.5" fill="#111827" fill-opacity="0.56" />
+</svg>

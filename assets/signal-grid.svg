@@ -1,0 +1,59 @@
+<svg width="720" height="620" viewBox="0 0 720 620" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="gridStroke" x1="84" y1="62" x2="648" y2="552" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E" stop-opacity="0.42" />
+      <stop offset="0.55" stop-color="#38BDF8" stop-opacity="0.22" />
+      <stop offset="1" stop-color="#111827" stop-opacity="0.06" />
+    </linearGradient>
+    <radialGradient id="gridGlow" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(364 326) rotate(90) scale(260 300)">
+      <stop stop-color="#CCFBF1" stop-opacity="0.78" />
+      <stop offset="1" stop-color="#CCFBF1" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="720" height="620" rx="42" fill="url(#gridGlow)" />
+
+  <g opacity="0.8">
+    <path d="M92 94H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 170H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 246H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 322H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 398H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 474H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M92 550H628" stroke="url(#gridStroke)" stroke-width="1.2" />
+
+    <path d="M132 62V582" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M236 62V582" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M340 62V582" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M444 62V582" stroke="url(#gridStroke)" stroke-width="1.2" />
+    <path d="M548 62V582" stroke="url(#gridStroke)" stroke-width="1.2" />
+  </g>
+
+  <path
+    d="M132 474C192 420 232 282 296 254C358 228 420 316 470 294C524 270 566 160 628 118"
+    stroke="#0F766E"
+    stroke-opacity="0.74"
+    stroke-width="4"
+    stroke-linecap="round"
+  />
+  <path
+    d="M132 382C188 332 240 350 300 322C370 290 416 168 494 178C550 184 596 248 628 300"
+    stroke="#38BDF8"
+    stroke-opacity="0.55"
+    stroke-width="3.2"
+    stroke-linecap="round"
+    stroke-dasharray="4 14"
+  />
+  <path
+    d="M132 182C184 198 232 246 286 246C342 246 388 190 444 190C508 190 570 246 628 246"
+    stroke="#111827"
+    stroke-opacity="0.18"
+    stroke-width="2.6"
+    stroke-linecap="round"
+  />
+
+  <circle cx="296" cy="254" r="9" fill="#0F766E" />
+  <circle cx="470" cy="294" r="10" fill="#14B8A6" />
+  <circle cx="494" cy="178" r="8" fill="#0EA5E9" />
+  <circle cx="300" cy="322" r="7" fill="#111827" fill-opacity="0.52" />
+</svg>
