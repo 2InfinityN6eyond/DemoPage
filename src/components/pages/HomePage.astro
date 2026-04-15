@@ -1,0 +1,265 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import type { Locale, SiteDictionary } from "@/i18n/schema";
+import { localizedPath } from "@/utils/i18n";
+
+interface Props {
+  locale: Locale;
+  dictionary: SiteDictionary;
+}
+
+const { locale, dictionary } = Astro.props;
+const productPath = localizedPath(locale, "product");
+const homePath = localizedPath(locale);
+const languageOptions = [
+  { label: "EN", href: localizedPath("en"), active: locale === "en" },
+  { label: "KO", href: localizedPath("ko"), active: locale === "ko" }
+];
+const heroFrame =
+  locale === "ko"
+    ? {
+        alt: "LogK 워크스페이스 대시보드 스크린샷",
+        badgeTop: "실행 중인 워크스페이스",
+        badgeBottom: "예상 비용 18.4 credits",
+        noteLabel: "실제 화면",
+        noteTitle: "모델 선택, 비용, 정책이 한 화면에 정리됩니다.",
+        noteBody: "홈페이지 첫 화면에서 제품이 추상적인 설명이 아니라 실제 소프트웨어처럼 보이도록 바꿉니다."
+      }
+    : {
+        alt: "LogK workspace dashboard screenshot",
+        badgeTop: "Live workspace",
+        badgeBottom: "Expected spend 18.4 credits",
+        noteLabel: "Real interface",
+        noteTitle: "Model choice, spend, and policy live in one screen.",
+        noteBody: "The homepage now leads with an actual software surface instead of an abstract mockup."
+      };
+---
+
+<Header
+  locale={locale}
+  dictionary={dictionary}
+  languageOptions={languageOptions}
+  actions={[
+    { label: dictionary.nav.product, href: productPath, ghost: true },
+    { label: dictionary.nav.talkToSales, href: `${homePath}#contact` }
+  ]}
+/>
+
+<main id="top">
+  <section class="hero section">
+    <div class="hero-copy" data-reveal>
+      <p class="eyebrow">{dictionary.hero.eyebrow}</p>
+      <h1>
+        {dictionary.hero.title}
+        <span class="headline-shift">{dictionary.hero.titleAccent}</span>
+      </h1>
+      <p class="hero-lede">{dictionary.hero.lede}</p>
+
+      <div class="hero-actions">
+        <a class="button" href={productPath}>{dictionary.hero.primaryCta}</a>
+        <a class="button button-ghost" href="#solution">{dictionary.hero.secondaryCta}</a>
+      </div>
+
+      <ul class="hero-metrics" aria-label="Key outcomes">
+        {dictionary.hero.metrics.map((metric) => (
+          <li>
+            <strong>{metric.value}</strong>
+            <span>{metric.label}</span>
+          </li>
+        ))}
+      </ul>
+    </div>
+
+    <div class="hero-visual" data-reveal>
+      <img class="hero-orbit" src={`${import.meta.env.BASE_URL}assets/hero-orbit.svg`} alt="" aria-hidden="true" />
+      <img class="hero-grid" src={`${import.meta.env.BASE_URL}assets/signal-grid.svg`} alt="" aria-hidden="true" />
+      <div class="hero-shot-stack" data-tilt>
+        <div class="hero-shot-card">
+          <img
+            class="hero-shot-image"
+            src={`${import.meta.env.BASE_URL}assets/workspace_screenshot.png`}
+            alt={heroFrame.alt}
+          />
+          <span class="hero-shot-badge hero-shot-badge-top">{heroFrame.badgeTop}</span>
+          <span class="hero-shot-badge hero-shot-badge-bottom">{heroFrame.badgeBottom}</span>
+        </div>
+
+        <div class="hero-shot-note">
+          <span class="card-index">{heroFrame.noteLabel}</span>
+          <strong>{heroFrame.noteTitle}</strong>
+          <p>{heroFrame.noteBody}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="trust-strip section">
+    <div class="trust-row">
+      {dictionary.trust.map((item) => (
+        <span>{item}</span>
+      ))}
+    </div>
+  </section>
+
+  <section id="solution" class="section split-section">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{dictionary.solution.eyebrow}</p>
+      <h2>{dictionary.solution.title}</h2>
+      <p>{dictionary.solution.description}</p>
+    </div>
+
+    <div class="feature-grid">
+      {dictionary.solution.cards.map((card) => (
+        <article class:list={["feature-card", { "feature-card-tall": card.tall }]} data-reveal>
+          <span class="card-index">{card.index}</span>
+          <h3>{card.title}</h3>
+          <p>{card.body}</p>
+          {card.bullets && (
+            <ul class="mini-list">
+              {card.bullets.map((bullet) => (
+                <li>{bullet}</li>
+              ))}
+            </ul>
+          )}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section class="section showcase-section">
+    <div class="section-head narrow" data-reveal>
+      <p class="eyebrow">{dictionary.showcase.eyebrow}</p>
+      <h2>{dictionary.showcase.title}</h2>
+      <p>{dictionary.showcase.description}</p>
+    </div>
+
+    <div class="showcase" data-showcase>
+      <div class="showcase-tabs" data-reveal>
+        {dictionary.showcase.tabs.map((tab, index) => (
+          <button class:list={["showcase-tab", { "is-active": index === 0 }]} type="button" data-tab={tab.id}>
+            {tab.label}
+          </button>
+        ))}
+      </div>
+
+      <div class="showcase-panels" data-reveal>
+        {dictionary.showcase.tabs.map((tab, index) => (
+          <article class:list={["showcase-panel", { "is-active": index === 0 }]} data-panel={tab.id}>
+            <div class="showcase-copy">
+              <h3>{tab.title}</h3>
+              <p>{tab.body}</p>
+            </div>
+            <div class="showcase-visual">
+              {tab.bullets && (
+                <div class="visual-card">
+                  <span class="visual-label">{tab.visualLabel}</span>
+                  <strong>{tab.visualTitle}</strong>
+                  <ul class="mini-list">
+                    {tab.bullets.map((bullet) => (
+                      <li>{bullet}</li>
+                    ))}
+                  </ul>
+                </div>
+              )}
+              {tab.stack && (
+                <div class="visual-stack">
+                  {tab.stack.map((stackLine) => (
+                    <div class="stack-card">{stackLine}</div>
+                  ))}
+                </div>
+              )}
+              {tab.reviewLines && (
+                <div class="review-board">
+                  {tab.reviewLines.map((line) => (
+                    <div class="review-line">
+                      <span class="review-dot"></span>
+                      <p>{line}</p>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          </article>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section id="technology" class="section tech-section">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{dictionary.technology.eyebrow}</p>
+      <h2>{dictionary.technology.title}</h2>
+      <p>{dictionary.technology.description}</p>
+    </div>
+
+    <div class="tech-layout">
+      <article class="tech-card tech-card-graphic" data-reveal>
+        <img src={`${import.meta.env.BASE_URL}assets/tech-lattice.svg`} alt="" aria-hidden="true" />
+        <div class="tech-card-copy">
+          <span class="eyebrow">{dictionary.technology.graphicEyebrow}</span>
+          <h3>{dictionary.technology.graphicTitle}</h3>
+          <p>{dictionary.technology.graphicBody}</p>
+        </div>
+      </article>
+
+      {dictionary.technology.cards.map((card) => (
+        <article class="tech-card" data-reveal>
+          <span class="card-index">{card.index}</span>
+          <h3>{card.title}</h3>
+          <p>{card.body}</p>
+        </article>
+      ))}
+
+      <article class="tech-card stats-card" data-reveal>
+        {dictionary.technology.stats.map((stat) => (
+          <div class="stat">
+            <strong data-count={stat.value}>0</strong>
+            <span>{stat.label}</span>
+          </div>
+        ))}
+      </article>
+    </div>
+  </section>
+
+  <section id="company" class="section company-section">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{dictionary.company.eyebrow}</p>
+      <h2>{dictionary.company.title}</h2>
+      <p>{dictionary.company.description}</p>
+    </div>
+
+    <div class="company-grid">
+      {dictionary.company.cards.map((card) => (
+        <article class:list={["company-card", { "company-card-wide": card.wide }]} data-reveal>
+          <span class="card-index">{card.index}</span>
+          {card.title && <h3>{card.title}</h3>}
+          {card.body && <p>{card.body}</p>}
+          {card.principles?.map((principle) => (
+            <div class="principle-row">
+              <strong>{principle.title}</strong>
+              <span>{principle.body}</span>
+            </div>
+          ))}
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <section id="contact" class="section contact-section" data-reveal>
+    <div class="contact-card">
+      <div class="contact-copy">
+        <p class="eyebrow">{dictionary.contact.eyebrow}</p>
+        <h2>{dictionary.contact.title}</h2>
+        <p>{dictionary.contact.body}</p>
+      </div>
+
+      <div class="contact-actions">
+        <a class="button" href="mailto:hello@logk.ai">{dictionary.contact.primaryCta}</a>
+        <a class="button button-ghost" href={productPath}>{dictionary.contact.secondaryCta}</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<Footer locale={locale} dictionary={dictionary} />

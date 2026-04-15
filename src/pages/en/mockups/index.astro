@@ -1,0 +1,15 @@
+---
+import MockupsPage from "@/components/pages/MockupsPage.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getDictionary } from "@/i18n/messages";
+
+const locale = "en";
+const dictionary = getDictionary(locale);
+const title = `${dictionary.meta.siteName} Mockups | Capture-ready product concepts`;
+const description =
+  "Original LogK mockups for model selection, answer comparison, privacy controls, and credit-based billing.";
+---
+
+<BaseLayout locale={locale} title={title} description={description}>
+  <MockupsPage locale={locale} dictionary={dictionary} />
+</BaseLayout>

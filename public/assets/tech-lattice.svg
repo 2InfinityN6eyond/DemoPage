@@ -1,0 +1,53 @@
+<svg width="1200" height="900" viewBox="0 0 1200 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgBlend" x1="120" y1="110" x2="1050" y2="780" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FFFE" />
+      <stop offset="0.48" stop-color="#E6F9F4" />
+      <stop offset="1" stop-color="#E2EEF7" />
+    </linearGradient>
+    <linearGradient id="wire" x1="208" y1="122" x2="944" y2="710" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#0F766E" stop-opacity="0.65" />
+      <stop offset="0.45" stop-color="#0EA5E9" stop-opacity="0.44" />
+      <stop offset="1" stop-color="#111827" stop-opacity="0.16" />
+    </linearGradient>
+    <radialGradient id="halo" cx="0" cy="0" r="1" gradientUnits="userSpaceOnUse" gradientTransform="translate(648 344) rotate(90) scale(280 340)">
+      <stop stop-color="#99F6E4" stop-opacity="0.8" />
+      <stop offset="1" stop-color="#99F6E4" stop-opacity="0" />
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="900" rx="40" fill="url(#bgBlend)" />
+  <ellipse cx="648" cy="344" rx="340" ry="280" fill="url(#halo)" />
+
+  <g opacity="0.62">
+    <path d="M188 198H1012" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M188 312H1012" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M188 426H1012" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M188 540H1012" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M188 654H1012" stroke="url(#wire)" stroke-width="1.2" />
+
+    <path d="M264 132V730" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M418 132V730" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M572 132V730" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M726 132V730" stroke="url(#wire)" stroke-width="1.2" />
+    <path d="M880 132V730" stroke="url(#wire)" stroke-width="1.2" />
+  </g>
+
+  <path d="M264 654L418 426L572 540L726 312L880 426" stroke="#0F766E" stroke-opacity="0.88" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" />
+  <path d="M264 426L418 312L572 426L726 198L880 312" stroke="#0EA5E9" stroke-opacity="0.58" stroke-width="4.5" stroke-linecap="round" stroke-linejoin="round" stroke-dasharray="6 14" />
+  <path d="M264 312L418 198L572 198L726 426L880 654" stroke="#111827" stroke-opacity="0.24" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" />
+
+  <g>
+    <circle cx="264" cy="654" r="16" fill="#0F766E" />
+    <circle cx="418" cy="426" r="18" fill="#14B8A6" />
+    <circle cx="572" cy="540" r="16" fill="#0EA5E9" />
+    <circle cx="726" cy="312" r="18" fill="#111827" fill-opacity="0.72" />
+    <circle cx="880" cy="426" r="16" fill="#0F766E" />
+  </g>
+
+  <g opacity="0.72">
+    <rect x="144" y="92" width="256" height="84" rx="22" fill="white" fill-opacity="0.76" />
+    <rect x="800" y="96" width="248" height="80" rx="22" fill="white" fill-opacity="0.72" />
+    <rect x="144" y="738" width="318" height="74" rx="22" fill="white" fill-opacity="0.76" />
+  </g>
+</svg>

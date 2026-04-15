@@ -1,0 +1,148 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import type { Locale, SiteDictionary } from "@/i18n/schema";
+import { localizedPath } from "@/utils/i18n";
+
+interface Props {
+  locale: Locale;
+  dictionary: SiteDictionary;
+}
+
+const { locale, dictionary } = Astro.props;
+const homePath = localizedPath(locale);
+const languageOptions = [
+  { label: "EN", href: localizedPath("en", "product"), active: locale === "en" },
+  { label: "KO", href: localizedPath("ko", "product"), active: locale === "ko" }
+];
+const gallery =
+  locale === "ko"
+    ? {
+        workspaceLabel: "Workspace",
+        workspaceTitle: "실제 워크스페이스 흐름",
+        workspaceBody: "모델 선택, 실행 제어, 개인정보 차단, 예상 비용이 하나의 제품 표면으로 읽히도록 구성합니다.",
+        workspaceAlt: "LogK workspace dashboard screenshot",
+        pricingLabel: "Pricing",
+        pricingTitle: "비용과 사용량을 시각적으로 보여주는 화면",
+        pricingBody: "가격은 별도 표가 아니라 실제 운영 화면처럼 보이게 하여, 크레딧 기반 결제를 더 신뢰할 수 있게 만듭니다.",
+        pricingAlt: "LogK pricing dashboard screenshot"
+      }
+    : {
+        workspaceLabel: "Workspace",
+        workspaceTitle: "A real workspace flow instead of an abstract demo",
+        workspaceBody: "Model choice, execution controls, privacy blocking, and spend estimation all read as one product surface.",
+        workspaceAlt: "LogK workspace dashboard screenshot",
+        pricingLabel: "Pricing",
+        pricingTitle: "Usage and spend presented as product UI",
+        pricingBody: "Pricing should feel like an operating surface, not a detached spreadsheet, so credit-based billing becomes easier to trust.",
+        pricingAlt: "LogK pricing dashboard screenshot"
+      };
+---
+
+<Header
+  locale={locale}
+  dictionary={dictionary}
+  languageOptions={languageOptions}
+  actions={[
+    { label: dictionary.nav.home, href: homePath, ghost: true },
+    { label: dictionary.nav.bookDemo, href: "mailto:hello@logk.ai" }
+  ]}
+/>
+
+<main>
+  <section class="product-hero section">
+    <div class="section-head narrow" data-reveal>
+      <p class="eyebrow">{dictionary.productPage.eyebrow}</p>
+      <h1>{dictionary.productPage.title}</h1>
+      <p>{dictionary.productPage.description}</p>
+    </div>
+
+    <div class="product-stage" data-reveal>
+      <img class="stage-art" src={`${import.meta.env.BASE_URL}assets/tech-lattice.svg`} alt="" aria-hidden="true" />
+      <div class="stage-shell">
+        {dictionary.productPage.stages.map((stage) => (
+          <div class="stage-column">
+            <span class="stage-label">{stage.label}</span>
+            <strong>{stage.title}</strong>
+            <p>{stage.body}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <section class="section product-gallery">
+    <article class="product-screenshot-card" data-reveal>
+      <div class="product-screenshot-copy">
+        <span class="card-index">{gallery.workspaceLabel}</span>
+        <h2>{gallery.workspaceTitle}</h2>
+        <p>{gallery.workspaceBody}</p>
+      </div>
+      <img
+        class="product-screenshot-image"
+        src={`${import.meta.env.BASE_URL}assets/workspace_screenshot.png`}
+        alt={gallery.workspaceAlt}
+      />
+    </article>
+
+    <article class="product-screenshot-card" data-reveal>
+      <div class="product-screenshot-copy">
+        <span class="card-index">{gallery.pricingLabel}</span>
+        <h2>{gallery.pricingTitle}</h2>
+        <p>{gallery.pricingBody}</p>
+      </div>
+      <img
+        class="product-screenshot-image"
+        src={`${import.meta.env.BASE_URL}assets/pricing_screenshot.png`}
+        alt={gallery.pricingAlt}
+      />
+    </article>
+  </section>
+
+  <section class="section product-grid">
+    {dictionary.productPage.surfaces.map((surface) => (
+      <article class:list={["product-card", { "product-card-wide": surface.wide }]} data-reveal>
+        <span class="card-index">{surface.index}</span>
+        <h2>{surface.title}</h2>
+        <p>{surface.body}</p>
+      </article>
+    ))}
+  </section>
+
+  <section class="section timeline-section">
+    <div class="section-head narrow" data-reveal>
+      <p class="eyebrow">{dictionary.productPage.flowEyebrow}</p>
+      <h2>{dictionary.productPage.flowTitle}</h2>
+      <p>{dictionary.productPage.flowDescription}</p>
+    </div>
+
+    <div class="timeline-card" data-reveal>
+      {dictionary.productPage.steps.map((step) => (
+        <div class="timeline-step">
+          <span>{step.number}</span>
+          <div>
+            <strong>{step.title}</strong>
+            <p>{step.body}</p>
+          </div>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="section contact-section" data-reveal>
+    <div class="contact-card">
+      <div class="contact-copy">
+        <p class="eyebrow">{dictionary.productPage.nextEyebrow}</p>
+        <h2>{dictionary.productPage.nextTitle}</h2>
+        <p>{dictionary.productPage.nextBody}</p>
+      </div>
+
+      <div class="contact-actions">
+        <a class="button" href="mailto:hello@logk.ai">{dictionary.productPage.primaryCta}</a>
+        <a class="button button-ghost" href={homePath}>{dictionary.productPage.secondaryCta}</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<Footer locale={locale} dictionary={dictionary} />

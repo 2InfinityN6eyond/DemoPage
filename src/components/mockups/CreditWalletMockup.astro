@@ -1,0 +1,91 @@
+---
+import type { Locale } from "@/i18n/schema";
+import MockupWindow from "@/components/mockups/MockupWindow.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const copy =
+  locale === "ko"
+    ? {
+        badge: "크레딧 월렛",
+        path: "app.logk.ai/billing/credits",
+        balanceLabel: "사용 가능 크레딧",
+        balanceValue: "12,480",
+        balanceBody: "팀별 예산과 실행 상한을 카드 단위로 관리합니다.",
+        budgetLabel: "이번 달 사용률",
+        budgetValue: "68%",
+        budgetBody: "제품 리서치 워크스페이스가 이번 달 가장 많은 멀티모델 실행을 사용했습니다.",
+        forecastLabel: "다음 런 예상 비용",
+        forecastValue: "14.2 credits",
+        forecastBody: "추천된 fallback을 적용하면 11.6 credits까지 낮출 수 있습니다.",
+        runsLabel: "최근 실행",
+        runs: [
+          { name: "Market brief", models: "GPT-5.2 + Claude + Gemini", credits: "18.4", status: "Verified" },
+          { name: "Contract review", models: "GPT-5.2 + Claude", credits: "12.1", status: "Blocked 3 fields" },
+          { name: "Support triage", models: "Gemini + DeepSeek", credits: "5.8", status: "Budget safe" }
+        ]
+      }
+    : {
+        badge: "Credit wallet",
+        path: "app.logk.ai/billing/credits",
+        balanceLabel: "Available credits",
+        balanceValue: "12,480",
+        balanceBody: "Manage team budgets and run ceilings as visible product controls.",
+        budgetLabel: "Monthly utilization",
+        budgetValue: "68%",
+        budgetBody: "The product research workspace is consuming the most multi-model runs this month.",
+        forecastLabel: "Next run estimate",
+        forecastValue: "14.2 credits",
+        forecastBody: "Applying the recommended fallback drops the run to 11.6 credits.",
+        runsLabel: "Recent runs",
+        runs: [
+          { name: "Market brief", models: "GPT-5.2 + Claude + Gemini", credits: "18.4", status: "Verified" },
+          { name: "Contract review", models: "GPT-5.2 + Claude", credits: "12.1", status: "Blocked 3 fields" },
+          { name: "Support triage", models: "Gemini + DeepSeek", credits: "5.8", status: "Budget safe" }
+        ]
+      };
+---
+
+<MockupWindow path={copy.path} badge={copy.badge}>
+  <div class="wallet-mockup">
+    <div class="wallet-summary">
+      <article class="wallet-card wallet-card-accent">
+        <span class="ui-kicker">{copy.balanceLabel}</span>
+        <strong>{copy.balanceValue}</strong>
+        <p>{copy.balanceBody}</p>
+      </article>
+      <article class="wallet-card">
+        <span class="ui-kicker">{copy.budgetLabel}</span>
+        <strong>{copy.budgetValue}</strong>
+        <p>{copy.budgetBody}</p>
+      </article>
+      <article class="wallet-card">
+        <span class="ui-kicker">{copy.forecastLabel}</span>
+        <strong>{copy.forecastValue}</strong>
+        <p>{copy.forecastBody}</p>
+      </article>
+    </div>
+
+    <article class="wallet-runs">
+      <span class="ui-kicker">{copy.runsLabel}</span>
+      <div class="run-table">
+        {copy.runs.map((run) => (
+          <div class="run-row">
+            <div>
+              <strong>{run.name}</strong>
+              <span>{run.models}</span>
+            </div>
+            <div class="run-meta">
+              <strong>{run.credits}</strong>
+              <span>{run.status}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </article>
+  </div>
+</MockupWindow>

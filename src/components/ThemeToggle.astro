@@ -1,0 +1,20 @@
+---
+interface Props {
+  label: string;
+  lightLabel: string;
+  darkLabel: string;
+}
+
+const { label, lightLabel, darkLabel } = Astro.props;
+---
+
+<button class="theme-toggle" type="button" data-theme-toggle aria-label={label}>
+  <span class="theme-toggle-art" aria-hidden="true">
+    <span class="theme-toggle-sun"></span>
+    <span class="theme-toggle-moon"></span>
+  </span>
+  <span class="theme-toggle-copy">
+    <span data-theme-label-light>{lightLabel}</span>
+    <span data-theme-label-dark>{darkLabel}</span>
+  </span>
+</button>

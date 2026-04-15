@@ -1,0 +1,12 @@
+---
+import ProductPage from "@/components/pages/ProductPage.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getDictionary } from "@/i18n/messages";
+
+const locale = "en";
+const dictionary = getDictionary(locale);
+---
+
+<BaseLayout locale={locale} title={dictionary.meta.productTitle} description={dictionary.meta.productDescription}>
+  <ProductPage locale={locale} dictionary={dictionary} />
+</BaseLayout>

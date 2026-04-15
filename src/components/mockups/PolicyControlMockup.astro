@@ -1,0 +1,124 @@
+---
+import type { Locale } from "@/i18n/schema";
+import MockupWindow from "@/components/mockups/MockupWindow.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const copy =
+  locale === "ko"
+    ? {
+        badge: "정책 제어",
+        path: "app.logk.ai/admin/privacy-guard",
+        cards: [
+          {
+            label: "차단 규칙",
+            title: "민감 엔티티 6종 감지",
+            body: "이메일, 전화번호, 계약 ID, 고객사명, 계좌 번호, 내부 URL을 기본 차단합니다."
+          },
+          {
+            label: "허용 프로바이더",
+            title: "OpenAI / Anthropic / Google",
+            body: "민감 워크스페이스에서는 허용된 프로바이더만 선택 가능합니다."
+          },
+          {
+            label: "감사 추적",
+            title: "모든 마스킹 이벤트 기록",
+            body: "어떤 필드가 제거되었는지 실행 기록에 남겨 팀 검토와 정책 조정이 쉽습니다."
+          }
+        ],
+        incidentsLabel: "최근 차단 이벤트",
+        incidents: [
+          "customer_email -> masked before Anthropic dispatch",
+          "contract_id -> removed for all providers",
+          "internal_url -> blocked from external routing"
+        ],
+        lanesLabel: "프로바이더 정책 레인",
+        lanes: [
+          { name: "Enterprise lane", status: "Allow", width: "88%" },
+          { name: "Fallback lane", status: "Review", width: "62%" },
+          { name: "Untrusted tools", status: "Block", width: "28%" }
+        ]
+      }
+    : {
+        badge: "Policy control",
+        path: "app.logk.ai/admin/privacy-guard",
+        cards: [
+          {
+            label: "Blocking rules",
+            title: "Detect six sensitive entity classes",
+            body: "Email, phone, contract ID, customer name, account numbers, and internal URLs are blocked by default."
+          },
+          {
+            label: "Allowed providers",
+            title: "OpenAI / Anthropic / Google",
+            body: "Sensitive workspaces can only route through providers explicitly approved by policy."
+          },
+          {
+            label: "Audit trail",
+            title: "Record every masking event",
+            body: "Each removed field stays attached to the run record for team review and policy tuning."
+          }
+        ],
+        incidentsLabel: "Recent blocking events",
+        incidents: [
+          "customer_email -> masked before Anthropic dispatch",
+          "contract_id -> removed for all providers",
+          "internal_url -> blocked from external routing"
+        ],
+        lanesLabel: "Provider policy lanes",
+        lanes: [
+          { name: "Enterprise lane", status: "Allow", width: "88%" },
+          { name: "Fallback lane", status: "Review", width: "62%" },
+          { name: "Untrusted tools", status: "Block", width: "28%" }
+        ]
+      };
+---
+
+<MockupWindow path={copy.path} badge={copy.badge}>
+  <div class="policy-mockup">
+    <div class="policy-grid">
+      {copy.cards.map((card) => (
+        <article class="policy-card">
+          <span class="ui-kicker">{card.label}</span>
+          <strong>{card.title}</strong>
+          <p>{card.body}</p>
+        </article>
+      ))}
+    </div>
+
+    <div class="policy-lower">
+      <article class="policy-events">
+        <span class="ui-kicker">{copy.incidentsLabel}</span>
+        <div class="event-feed">
+          {copy.incidents.map((incident) => (
+            <div class="event-row">
+              <span class="event-dot"></span>
+              <code>{incident}</code>
+            </div>
+          ))}
+        </div>
+      </article>
+
+      <article class="policy-lanes">
+        <span class="ui-kicker">{copy.lanesLabel}</span>
+        <div class="lane-list">
+          {copy.lanes.map((lane) => (
+            <div class="lane-row">
+              <div class="lane-copy">
+                <strong>{lane.name}</strong>
+                <span>{lane.status}</span>
+              </div>
+              <div class="lane-track">
+                <div class="lane-fill" style={`width: ${lane.width};`}></div>
+              </div>
+            </div>
+          ))}
+        </div>
+      </article>
+    </div>
+  </div>
+</MockupWindow>

@@ -1,0 +1,25 @@
+---
+interface Props {
+  path: string;
+  badge: string;
+  compact?: boolean;
+}
+
+const { path, badge, compact = false } = Astro.props;
+---
+
+<div class:list={["ui-window", { "ui-window-compact": compact }]}>
+  <div class="ui-window-bar">
+    <div class="window-dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+    <div class="ui-window-path">{path}</div>
+    <div class="ui-window-badge">{badge}</div>
+  </div>
+
+  <div class="ui-window-body">
+    <slot />
+  </div>
+</div>

@@ -1,0 +1,255 @@
+<script>
+  const STORAGE_KEY = "logk-theme";
+  let showcaseInterval: number | undefined;
+
+  const getPreferredTheme = (): "light" | "dark" => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") {
+      return stored;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light";
+  };
+
+  const applyTheme = (theme: "light" | "dark", persist = true) => {
+    document.documentElement.dataset.theme = theme;
+    if (persist) {
+      localStorage.setItem(STORAGE_KEY, theme);
+    }
+
+    document.querySelectorAll("[data-theme-toggle]").forEach((button) => {
+      button.setAttribute("aria-pressed", String(theme === "dark"));
+    });
+  };
+
+  const syncScrollProgress = () => {
+    const progressBar = document.querySelector<HTMLElement>(".scroll-progress");
+    if (!progressBar) {
+      return;
+    }
+
+    const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
+    const progress = scrollableHeight > 0 ? window.scrollY / scrollableHeight : 0;
+    progressBar.style.transform = `scaleX(${Math.min(Math.max(progress, 0), 1)})`;
+  };
+
+  const syncHeaderState = () => {
+    const header = document.querySelector<HTMLElement>("[data-header]");
+    if (!header) {
+      return;
+    }
+
+    header.classList.toggle("is-condensed", window.scrollY > 18);
+  };
+
+  const initShowcase = (reducedMotion: boolean) => {
+    if (showcaseInterval) {
+      window.clearInterval(showcaseInterval);
+      showcaseInterval = undefined;
+    }
+
+    const showcase = document.querySelector<HTMLElement>("[data-showcase]");
+    if (!showcase) {
+      return;
+    }
+
+    const tabs = [...showcase.querySelectorAll<HTMLElement>("[data-tab]")];
+    const panels = [...showcase.querySelectorAll<HTMLElement>("[data-panel]")];
+    let activeIndex = tabs.findIndex((tab) => tab.classList.contains("is-active"));
+    activeIndex = activeIndex >= 0 ? activeIndex : 0;
+
+    const setPanel = (name?: string) => {
+      if (!name) {
+        return;
+      }
+
+      tabs.forEach((tab) => {
+        tab.classList.toggle("is-active", tab.dataset.tab === name);
+      });
+
+      panels.forEach((panel) => {
+        panel.classList.toggle("is-active", panel.dataset.panel === name);
+      });
+    };
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => {
+        activeIndex = index;
+        setPanel(tab.dataset.tab);
+      });
+    });
+
+    if (!reducedMotion && tabs.length > 1) {
+      showcaseInterval = window.setInterval(() => {
+        activeIndex = (activeIndex + 1) % tabs.length;
+        setPanel(tabs[activeIndex].dataset.tab);
+      }, 4200);
+    }
+  };
+
+  const initTilt = (reducedMotion: boolean) => {
+    const tiltCard = document.querySelector<HTMLElement>("[data-tilt]");
+    if (!tiltCard || reducedMotion) {
+      return;
+    }
+
+    tiltCard.addEventListener("pointermove", (event: PointerEvent) => {
+      const rect = tiltCard.getBoundingClientRect();
+      const px = (event.clientX - rect.left) / rect.width;
+      const py = (event.clientY - rect.top) / rect.height;
+      const rotateY = (px - 0.5) * 7;
+      const rotateX = (0.5 - py) * 7;
+      tiltCard.style.transform = `perspective(1600px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
+    });
+
+    tiltCard.addEventListener("pointerleave", () => {
+      tiltCard.style.transform = "perspective(1600px) rotateX(0deg) rotateY(0deg)";
+    });
+  };
+
+  const initReveal = (reducedMotion: boolean) => {
+    const revealItems = [...document.querySelectorAll<HTMLElement>("[data-reveal]")];
+    if (revealItems.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      {
+        threshold: 0.16,
+        rootMargin: "0px 0px -48px 0px"
+      }
+    );
+
+    revealItems.forEach((item, index) => {
+      item.style.transitionDelay = reducedMotion ? "0ms" : `${Math.min(index * 40, 220)}ms`;
+      observer.observe(item);
+    });
+  };
+
+  const initCounters = (reducedMotion: boolean) => {
+    const items = [...document.querySelectorAll<HTMLElement>("[data-count]")];
+    if (items.length === 0) {
+      return;
+    }
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) {
+            return;
+          }
+
+          const node = entry.target as HTMLElement;
+          const target = Number(node.dataset.count ?? 0);
+          const duration = reducedMotion ? 0 : 1200;
+          const start = performance.now();
+
+          const tick = (timestamp: number) => {
+            if (duration === 0) {
+              node.textContent = String(target);
+              return;
+            }
+
+            const progress = Math.min((timestamp - start) / duration, 1);
+            const eased = 1 - Math.pow(1 - progress, 3);
+            node.textContent = String(Math.round(target * eased));
+
+            if (progress < 1) {
+              window.requestAnimationFrame(tick);
+            }
+          };
+
+          window.requestAnimationFrame(tick);
+          observer.unobserve(node);
+        });
+      },
+      { threshold: 0.45 }
+    );
+
+    items.forEach((item) => observer.observe(item));
+  };
+
+  const initMobileMenu = () => {
+    const header = document.querySelector<HTMLElement>("[data-header]");
+    const navToggle = document.querySelector<HTMLButtonElement>("[data-nav-toggle]");
+    const nav = document.querySelector<HTMLElement>("[data-nav]");
+
+    if (!header || !navToggle || !nav) {
+      return;
+    }
+
+    navToggle.addEventListener("click", () => {
+      const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      navToggle.setAttribute("aria-expanded", String(!expanded));
+      header.classList.toggle("menu-open", !expanded);
+      document.body.classList.toggle("menu-open", !expanded);
+    });
+
+    [
+      ...nav.querySelectorAll<HTMLAnchorElement>("a"),
+      ...document.querySelectorAll<HTMLAnchorElement>(".header-actions a"),
+      ...document.querySelectorAll<HTMLAnchorElement>(".header-controls a")
+    ].forEach((link) => {
+        link.addEventListener("click", () => {
+          navToggle.setAttribute("aria-expanded", "false");
+          header.classList.remove("menu-open");
+          document.body.classList.remove("menu-open");
+        });
+      });
+  };
+
+  const initPage = () => {
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    applyTheme(getPreferredTheme(), false);
+    initMobileMenu();
+    initShowcase(reducedMotion);
+    initTilt(reducedMotion);
+    initReveal(reducedMotion);
+    initCounters(reducedMotion);
+    syncScrollProgress();
+    syncHeaderState();
+    document.querySelectorAll<HTMLElement>("[data-year]").forEach((node) => {
+      node.textContent = String(new Date().getFullYear());
+    });
+  };
+
+  document.addEventListener("click", (event) => {
+    const target = event.target instanceof Element ? event.target : null;
+    const toggle = target?.closest("[data-theme-toggle]");
+    if (!toggle) {
+      return;
+    }
+
+    const nextTheme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+    applyTheme(nextTheme);
+  });
+
+  window.addEventListener(
+    "scroll",
+    () => {
+      syncScrollProgress();
+      syncHeaderState();
+    },
+    { passive: true }
+  );
+
+  window.matchMedia("(prefers-color-scheme: dark)").addEventListener("change", (event) => {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    if (stored === "light" || stored === "dark") {
+      return;
+    }
+
+    applyTheme(event.matches ? "dark" : "light", false);
+  });
+
+  document.addEventListener("astro:page-load", initPage);
+  initPage();
+</script>

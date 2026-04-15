@@ -1,0 +1,137 @@
+---
+import type { Locale } from "@/i18n/schema";
+import MockupWindow from "@/components/mockups/MockupWindow.astro";
+
+interface Props {
+  locale: Locale;
+}
+
+const { locale } = Astro.props;
+
+const copy =
+  locale === "ko"
+    ? {
+        badge: "비교 보기",
+        path: "app.logk.ai/runs/market-brief-128/compare",
+        overviewLabel: "합의 상태",
+        overviewTitle: "3개 중 2개 모델이 핵심 주장에 동의",
+        overviewBody: "하나의 숫자 주장만 재검증 대상으로 분리했고, 집계 답변은 그 충돌을 주석으로 남깁니다.",
+        synthesisLabel: "집계 결과",
+        synthesisTitle: "신뢰 가능한 최종 요약",
+        synthesisBody:
+          "시장 메시지는 '단일 모델 접근'에서 '선택 + 비용 + 검증이 결합된 orchestration'으로 이동하고 있습니다. LogK는 바로 그 사용자-facing 제어면을 제공합니다.",
+        columns: [
+          {
+            provider: "GPT-5.2",
+            verdict: "초안 강함",
+            confidence: "0.92",
+            bullets: [
+              "차별점으로 가격 가시성과 멀티모델 집계를 강조",
+              "경쟁사를 개발자 인프라 vs 소비자 채팅으로 양분",
+              "추가 검증 필요 숫자 1개 표시"
+            ]
+          },
+          {
+            provider: "Claude Sonnet",
+            verdict: "비판 우세",
+            confidence: "0.88",
+            bullets: [
+              "개인정보 차단과 신뢰 레이어의 필요성을 더 강하게 주장",
+              "마케팅 카피보다 비교 UX를 앞에 두는 편이 낫다고 제안",
+              "한 경쟁사 pricing 해석은 낮은 확신"
+            ]
+          },
+          {
+            provider: "Gemini 2.5 Pro",
+            verdict: "검증 통과",
+            confidence: "0.90",
+            bullets: [
+              "주요 포지셔닝은 두 모델과 일치",
+              "외부 시장 주장 중 하나를 추가 확인 대상으로 재질문",
+              "최종 집계 시 리스크 문구 유지 권고"
+            ]
+          }
+        ]
+      }
+    : {
+        badge: "Compare view",
+        path: "app.logk.ai/runs/market-brief-128/compare",
+        overviewLabel: "Consensus state",
+        overviewTitle: "Two of three models agree on the core positioning",
+        overviewBody:
+          "One numerical claim is isolated for re-verification, and the aggregated answer keeps that conflict annotated.",
+        synthesisLabel: "Aggregated answer",
+        synthesisTitle: "Trustworthy final synthesis",
+        synthesisBody:
+          "The market narrative is moving from single-model access toward orchestration that combines model choice, spend visibility, and verification. LogK owns that user-facing control layer.",
+        columns: [
+          {
+            provider: "GPT-5.2",
+            verdict: "Strong draft",
+            confidence: "0.92",
+            bullets: [
+              "Emphasizes visible pricing and multi-model synthesis as differentiators",
+              "Splits competitors into developer infra and consumer chat camps",
+              "Flags one number for extra verification"
+            ]
+          },
+          {
+            provider: "Claude Sonnet",
+            verdict: "Best critique",
+            confidence: "0.88",
+            bullets: [
+              "Pushes harder on privacy blocking and the trust layer",
+              "Recommends leading with comparison UX over generic marketing copy",
+              "Rates one competitor-pricing claim as lower confidence"
+            ]
+          },
+          {
+            provider: "Gemini 2.5 Pro",
+            verdict: "Verification pass",
+            confidence: "0.90",
+            bullets: [
+              "Matches the core positioning from the other models",
+              "Requests one extra follow-up on an external market claim",
+              "Suggests preserving the risk caveat in the final synthesis"
+            ]
+          }
+        ]
+      };
+---
+
+<MockupWindow path={copy.path} badge={copy.badge}>
+  <div class="compare-mockup">
+    <article class="compare-overview">
+      <div>
+        <span class="ui-kicker">{copy.overviewLabel}</span>
+        <strong>{copy.overviewTitle}</strong>
+        <p>{copy.overviewBody}</p>
+      </div>
+      <div class="confidence-pill">2 / 3 aligned</div>
+    </article>
+
+    <div class="compare-columns">
+      {copy.columns.map((column) => (
+        <article class="compare-column">
+          <div class="compare-column-top">
+            <span>{column.provider}</span>
+            <span class="ui-pill">{column.verdict}</span>
+          </div>
+          <strong>{column.confidence}</strong>
+          <span class="compare-confidence-label">confidence</span>
+          <ul class="mini-list mini-list-tight">
+            {column.bullets.map((bullet) => (
+              <li>{bullet}</li>
+            ))}
+          </ul>
+        </article>
+      ))}
+    </div>
+
+    <article class="synthesis-panel">
+      <span class="ui-kicker">{copy.synthesisLabel}</span>
+      <strong>{copy.synthesisTitle}</strong>
+      <p>{copy.synthesisBody}</p>
+    </article>
+  </div>
+</MockupWindow>

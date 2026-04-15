@@ -1,0 +1,12 @@
+---
+import HomePage from "@/components/pages/HomePage.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getDictionary } from "@/i18n/messages";
+
+const locale = "ko";
+const dictionary = getDictionary(locale);
+---
+
+<BaseLayout locale={locale} title={dictionary.meta.homeTitle} description={dictionary.meta.homeDescription}>
+  <HomePage locale={locale} dictionary={dictionary} />
+</BaseLayout>

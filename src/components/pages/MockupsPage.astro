@@ -1,0 +1,155 @@
+---
+import Footer from "@/components/Footer.astro";
+import Header from "@/components/Header.astro";
+import AnswerCompareMockup from "@/components/mockups/AnswerCompareMockup.astro";
+import CreditWalletMockup from "@/components/mockups/CreditWalletMockup.astro";
+import ModelSelectionMockup from "@/components/mockups/ModelSelectionMockup.astro";
+import PolicyControlMockup from "@/components/mockups/PolicyControlMockup.astro";
+import type { Locale, SiteDictionary } from "@/i18n/schema";
+import { localizedPath } from "@/utils/i18n";
+
+interface Props {
+  locale: Locale;
+  dictionary: SiteDictionary;
+}
+
+const { locale, dictionary } = Astro.props;
+const homePath = localizedPath(locale);
+const productPath = localizedPath(locale, "product");
+const languageOptions = [
+  { label: "EN", href: localizedPath("en", "mockups"), active: locale === "en" },
+  { label: "KO", href: localizedPath("ko", "mockups"), active: locale === "ko" }
+];
+
+const copy =
+  locale === "ko"
+    ? {
+        eyebrow: "캡처용 목업",
+        title: "LogK 제품 화면을 캡처 가능한 형태로 정리했습니다.",
+        lede:
+          "LogK는 여러 AI 서비스를 위한 delegation layer입니다. 사용자는 여러 모델을 선택하고, 예상 비용을 보고, 개인정보 차단 정책을 적용한 뒤, 답변을 비교하거나 집계하고, 필요하면 자동 검증까지 실행할 수 있습니다.",
+        note:
+          "현재 카테고리 리더들의 UI에서 공통적으로 보이는 패턴은 명확합니다. 직접적인 hero 메시지, 바로 이해되는 dashboard surface, 가격/정책/관측성 모듈, 그리고 빠른 신뢰 형성입니다. 아래 목업은 그 패턴을 LogK의 제품 흐름에 맞게 재구성한 것입니다.",
+        primaryCta: "제품 페이지로 이동",
+        secondaryCta: "홈페이지로 돌아가기",
+        scenes: [
+          {
+            eyebrow: "Scene 01",
+            title: "Model board",
+            body: "모델 선택이 핵심 제품 경험이라는 점을 바로 보여주는 첫 화면입니다."
+          },
+          {
+            eyebrow: "Scene 02",
+            title: "Answer compare",
+            body: "단일 답변이 아니라 모델 간 차이와 합의를 보여주어 신뢰를 만듭니다."
+          },
+          {
+            eyebrow: "Scene 03",
+            title: "Privacy control",
+            body: "민감 정보 차단과 provider 정책을 시각적으로 설명하는 운영 화면입니다."
+          },
+          {
+            eyebrow: "Scene 04",
+            title: "Credit wallet",
+            body: "크레딧 기반 과금과 실행별 비용 가시성을 제품 화면으로 드러냅니다."
+          }
+        ]
+      }
+    : {
+        eyebrow: "Capture-ready mockups",
+        title: "LogK product surfaces prepared for screenshots and iteration.",
+        lede:
+          "LogK is the delegation layer for AI services. Users select several models, preview expected spend, apply privacy blocking, compare outputs, aggregate answers, and trigger automatic follow-up verification from one workspace.",
+        note:
+          "The category leaders repeat the same UI pattern: direct hero framing, an immediately legible dashboard surface, strong pricing or policy modules, and quick trust cues. These mockups translate those patterns into LogK's actual workflow instead of copying competitor assets.",
+        primaryCta: "Open product page",
+        secondaryCta: "Back to homepage",
+        scenes: [
+          {
+            eyebrow: "Scene 01",
+            title: "Model board",
+            body: "Lead with the idea that model selection is the primary product interaction."
+          },
+          {
+            eyebrow: "Scene 02",
+            title: "Answer compare",
+            body: "Show disagreement and synthesis explicitly instead of hiding behind one answer."
+          },
+          {
+            eyebrow: "Scene 03",
+            title: "Privacy control",
+            body: "Make sensitive-data blocking and provider policy visible as operating surfaces."
+          },
+          {
+            eyebrow: "Scene 04",
+            title: "Credit wallet",
+            body: "Turn credit-based billing and run-level spend into a product-native view."
+          }
+        ]
+      };
+---
+
+<Header
+  locale={locale}
+  dictionary={dictionary}
+  languageOptions={languageOptions}
+  actions={[
+    { label: dictionary.nav.product, href: productPath, ghost: true },
+    { label: dictionary.nav.home, href: homePath }
+  ]}
+/>
+
+<main>
+  <section class="mockups-hero section">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">{copy.eyebrow}</p>
+      <h1>{copy.title}</h1>
+      <p>{copy.lede}</p>
+      <p>{copy.note}</p>
+      <div class="hero-actions">
+        <a class="button" href={productPath}>{copy.primaryCta}</a>
+        <a class="button button-ghost" href={homePath}>{copy.secondaryCta}</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="section mockups-grid">
+    <article class="mockup-scene" data-reveal>
+      <div class="mockup-scene-head">
+        <p class="eyebrow">{copy.scenes[0].eyebrow}</p>
+        <h2>{copy.scenes[0].title}</h2>
+        <p>{copy.scenes[0].body}</p>
+      </div>
+      <ModelSelectionMockup locale={locale} />
+    </article>
+
+    <article class="mockup-scene" data-reveal>
+      <div class="mockup-scene-head">
+        <p class="eyebrow">{copy.scenes[1].eyebrow}</p>
+        <h2>{copy.scenes[1].title}</h2>
+        <p>{copy.scenes[1].body}</p>
+      </div>
+      <AnswerCompareMockup locale={locale} />
+    </article>
+
+    <article class="mockup-scene" data-reveal>
+      <div class="mockup-scene-head">
+        <p class="eyebrow">{copy.scenes[2].eyebrow}</p>
+        <h2>{copy.scenes[2].title}</h2>
+        <p>{copy.scenes[2].body}</p>
+      </div>
+      <PolicyControlMockup locale={locale} />
+    </article>
+
+    <article class="mockup-scene" data-reveal>
+      <div class="mockup-scene-head">
+        <p class="eyebrow">{copy.scenes[3].eyebrow}</p>
+        <h2>{copy.scenes[3].title}</h2>
+        <p>{copy.scenes[3].body}</p>
+      </div>
+      <CreditWalletMockup locale={locale} />
+    </article>
+  </section>
+</main>
+
+<Footer locale={locale} dictionary={dictionary} />

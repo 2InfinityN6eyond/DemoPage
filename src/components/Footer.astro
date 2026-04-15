@@ -1,0 +1,27 @@
+---
+import type { Locale, SiteDictionary } from "@/i18n/schema";
+import { localizedPath } from "@/utils/i18n";
+
+interface Props {
+  locale: Locale;
+  dictionary: SiteDictionary;
+}
+
+const { locale, dictionary } = Astro.props;
+const homePath = localizedPath(locale);
+---
+
+<footer class="site-footer">
+  <div>
+    <span class="brand-mark brand-mark-small">L</span>
+    <span>{dictionary.meta.siteName}</span>
+  </div>
+  <div class="footer-links">
+    {dictionary.nav.items.map((item) => (
+      <a href={`${homePath}${item.href}`}>{item.label}</a>
+    ))}
+  </div>
+  <div class="footer-copy">
+    Copyright {new Date().getFullYear()} {dictionary.meta.siteName}. {dictionary.footer.copyright}
+  </div>
+</footer>

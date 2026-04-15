@@ -1,0 +1,63 @@
+---
+import LanguageSwitcher from "@/components/LanguageSwitcher.astro";
+import ThemeToggle from "@/components/ThemeToggle.astro";
+import type { Locale, SiteDictionary } from "@/i18n/schema";
+import { localizedPath } from "@/utils/i18n";
+
+type HeaderAction = {
+  label: string;
+  href: string;
+  ghost?: boolean;
+};
+
+type LanguageOption = {
+  label: string;
+  href: string;
+  active: boolean;
+};
+
+interface Props {
+  locale: Locale;
+  dictionary: SiteDictionary;
+  actions: HeaderAction[];
+  languageOptions: LanguageOption[];
+}
+
+const { locale, dictionary, actions, languageOptions } = Astro.props;
+const homePath = localizedPath(locale);
+---
+
+<header class="site-header" data-header>
+  <a class="brand" href={homePath} aria-label={`${dictionary.meta.siteName} home`}>
+    <span class="brand-mark">L</span>
+    <span class="brand-word">{dictionary.meta.siteName}</span>
+  </a>
+
+  <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu" data-nav-toggle>
+    <span></span>
+    <span></span>
+  </button>
+
+  <nav class="site-nav" data-nav>
+    {dictionary.nav.items.map((item) => (
+      <a href={`${homePath}${item.href}`}>{item.label}</a>
+    ))}
+  </nav>
+
+  <div class="header-actions">
+    {actions.map((action) => (
+      <a class:list={["button", { "button-ghost": action.ghost }]} href={action.href}>
+        {action.label}
+      </a>
+    ))}
+  </div>
+
+  <div class="header-controls">
+    <LanguageSwitcher label={dictionary.localeSwitcher.label} options={languageOptions} />
+    <ThemeToggle
+      label={dictionary.theme.toggleLabel}
+      lightLabel={dictionary.theme.light}
+      darkLabel={dictionary.theme.dark}
+    />
+  </div>
+</header>

@@ -1,0 +1,160 @@
+---
+import type { Locale } from "@/i18n/schema";
+import MockupWindow from "@/components/mockups/MockupWindow.astro";
+
+interface Props {
+  locale: Locale;
+  compact?: boolean;
+}
+
+const { locale, compact = false } = Astro.props;
+
+const copy =
+  locale === "ko"
+    ? {
+        badge: "라이브 스택",
+        path: "app.logk.ai/workspaces/briefing",
+        boardLabel: "모델 보드",
+        recommendation: "추천",
+        selected: "선택됨",
+        summaryLabel: "현재 실행",
+        summaryTitle: "시장 브리핑용 멀티모델 스택",
+        summaryBody: "속도, 심층 추론, 교차검증을 함께 가져가되 비용 상한을 24 credits 아래로 유지합니다.",
+        spendLabel: "예상 비용",
+        spendValue: "18.4 credits",
+        promptLabel: "위임할 질문",
+        promptText:
+          "이번 주 AI 인프라 경쟁 구도를 요약하고, 우리 제품 전략에 중요한 차별점을 정리해줘.",
+        decisionCards: [
+          {
+            label: "라우팅",
+            title: "3개 모델 동시 위임",
+            body: "OpenAI 초안, Anthropic 비판, Google 검증 흐름으로 fan-out"
+          },
+          {
+            label: "정책",
+            title: "민감 정보 차단 활성화",
+            body: "이메일, 계약 ID, 고객사명을 외부 전송 전에 마스킹"
+          },
+          {
+            label: "후속 검증",
+            title: "불일치 시 자동 재질문",
+            body: "의견 충돌이 감지되면 추가 질의 1회를 자동 실행"
+          }
+        ],
+        railCards: [
+          { label: "권장 품질", value: "High confidence", body: "비교 + 집계 + 검증 루프 포함" },
+          { label: "예상 지연", value: "23 sec", body: "선택된 스택 기준 p50 예상" },
+          { label: "개인정보", value: "4 fields blocked", body: "민감 필드가 provider 호출 전에 제거됩니다." }
+        ],
+        models: [
+          { label: "OpenAI", name: "GPT-5.2", meta: "강한 초안 생성, 도구 활용", state: "selected" },
+          { label: "Anthropic", name: "Claude Sonnet", meta: "비판, 리라이트, 긴 문맥", state: "selected" },
+          { label: "Google", name: "Gemini 2.5 Pro", meta: "검증, 멀티모달 follow-up", state: "selected" },
+          { label: "DeepSeek", name: "R1", meta: "저비용 대체 추론 경로", state: "recommended" }
+        ]
+      }
+    : {
+        badge: "Live stack",
+        path: "app.logk.ai/workspaces/briefing",
+        boardLabel: "Model board",
+        recommendation: "Recommended",
+        selected: "Selected",
+        summaryLabel: "Active run",
+        summaryTitle: "Multi-model stack for strategic briefings",
+        summaryBody: "Blend speed, deep reasoning, and verification while holding the credit ceiling below 24.",
+        spendLabel: "Expected spend",
+        spendValue: "18.4 credits",
+        promptLabel: "Delegated prompt",
+        promptText:
+          "Summarize this week's AI infrastructure competition and isolate the product differentiators that matter for our strategy.",
+        decisionCards: [
+          {
+            label: "Routing",
+            title: "Fan out to three models",
+            body: "OpenAI drafts, Anthropic critiques, and Google verifies before synthesis."
+          },
+          {
+            label: "Policy",
+            title: "Sensitive data blocking active",
+            body: "Email, contract IDs, and customer names are masked before dispatch."
+          },
+          {
+            label: "Follow-up",
+            title: "Auto-reask on disagreement",
+            body: "Run one extra verifier turn whenever the stack conflicts on a claim."
+          }
+        ],
+        railCards: [
+          { label: "Quality mode", value: "High confidence", body: "Compare, aggregate, and verify are all enabled." },
+          { label: "Expected latency", value: "23 sec", body: "Estimated p50 for the selected stack." },
+          { label: "Privacy", value: "4 fields blocked", body: "Sensitive fields are removed before any provider call." }
+        ],
+        models: [
+          { label: "OpenAI", name: "GPT-5.2", meta: "Strong drafting and tool use", state: "selected" },
+          { label: "Anthropic", name: "Claude Sonnet", meta: "Critique, rewrite, long context", state: "selected" },
+          { label: "Google", name: "Gemini 2.5 Pro", meta: "Verification and multimodal follow-up", state: "selected" },
+          { label: "DeepSeek", name: "R1", meta: "Low-cost fallback reasoning lane", state: "recommended" }
+        ]
+      };
+---
+
+<MockupWindow path={copy.path} badge={copy.badge} compact={compact}>
+  <div class:list={["board-mockup", { "is-compact": compact }]}>
+    <aside class="board-sidebar">
+      <span class="ui-kicker">{copy.boardLabel}</span>
+
+      {copy.models.map((model) => (
+        <article class:list={["model-card", `model-card-${model.state}`]}>
+          <div class="model-card-top">
+            <span>{model.label}</span>
+            <span class:list={["ui-pill", { "ui-pill-accent": model.state === "selected" }]}>
+              {model.state === "selected" ? copy.selected : copy.recommendation}
+            </span>
+          </div>
+          <strong>{model.name}</strong>
+          <p>{model.meta}</p>
+        </article>
+      ))}
+    </aside>
+
+    <div class="board-main">
+      <article class="board-summary">
+        <div>
+          <span class="ui-kicker">{copy.summaryLabel}</span>
+          <strong>{copy.summaryTitle}</strong>
+          <p>{copy.summaryBody}</p>
+        </div>
+        <div class="summary-spend">
+          <span>{copy.spendLabel}</span>
+          <strong>{copy.spendValue}</strong>
+        </div>
+      </article>
+
+      <article class="prompt-panel">
+        <span class="ui-kicker">{copy.promptLabel}</span>
+        <p>{copy.promptText}</p>
+      </article>
+
+      <div class="decision-grid">
+        {copy.decisionCards.map((card) => (
+          <article class="decision-card">
+            <span class="ui-kicker">{card.label}</span>
+            <strong>{card.title}</strong>
+            <p>{card.body}</p>
+          </article>
+        ))}
+      </div>
+    </div>
+
+    <aside class="board-rail">
+      {copy.railCards.map((card) => (
+        <article class="rail-panel">
+          <span class="ui-kicker">{card.label}</span>
+          <strong>{card.value}</strong>
+          <p>{card.body}</p>
+        </article>
+      ))}
+    </aside>
+  </div>
+</MockupWindow>

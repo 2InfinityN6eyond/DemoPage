@@ -1,0 +1,15 @@
+---
+import MockupsPage from "@/components/pages/MockupsPage.astro";
+import BaseLayout from "@/layouts/BaseLayout.astro";
+import { getDictionary } from "@/i18n/messages";
+
+const locale = "ko";
+const dictionary = getDictionary(locale);
+const title = `${dictionary.meta.siteName} Mockups | 캡처용 제품 목업`;
+const description =
+  "모델 선택, 답변 비교, 개인정보 제어, 크레딧 기반 과금을 위한 LogK 오리지널 목업 화면입니다.";
+---
+
+<BaseLayout locale={locale} title={title} description={description}>
+  <MockupsPage locale={locale} dictionary={dictionary} />
+</BaseLayout>
