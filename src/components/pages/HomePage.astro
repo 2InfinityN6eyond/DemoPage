@@ -16,25 +16,12 @@ const languageOptions = [
   { label: "EN", href: localizedPath("en"), active: locale === "en" },
   { label: "KO", href: localizedPath("ko"), active: locale === "ko" }
 ];
-const heroFrame =
-  locale === "ko"
-    ? {
-        alt: "LogK 워크스페이스 대시보드 스크린샷",
-        badgeTop: "실행 중인 워크스페이스",
-        badgeBottom: "예상 비용 18.4 credits",
-        noteLabel: "실제 화면",
-        noteTitle: "모델 선택, 비용, 정책이 한 화면에 정리됩니다.",
-        noteBody: "홈페이지 첫 화면에서 제품이 추상적인 설명이 아니라 실제 소프트웨어처럼 보이도록 바꿉니다."
-      }
-    : {
-        alt: "LogK workspace dashboard screenshot",
-        badgeTop: "Live workspace",
-        badgeBottom: "Expected spend 18.4 credits",
-        noteLabel: "Real interface",
-        noteTitle: "Model choice, spend, and policy live in one screen.",
-        noteBody: "The homepage now leads with an actual software surface instead of an abstract mockup."
-      };
+const productPreviewBase = `${import.meta.env.BASE_URL}product-preview/`;
+const previewFeatures = dictionary.hero.previewFeatures;
+const previewFallback = dictionary.hero.previewFallback;
 ---
+
+<link rel="stylesheet" href={`${productPreviewBase}product-preview.css`} />
 
 <Header
   locale={locale}
@@ -71,26 +58,78 @@ const heroFrame =
       </ul>
     </div>
 
-    <div class="hero-visual" data-reveal>
-      <img class="hero-orbit" src={`${import.meta.env.BASE_URL}assets/hero-orbit.svg`} alt="" aria-hidden="true" />
-      <img class="hero-grid" src={`${import.meta.env.BASE_URL}assets/signal-grid.svg`} alt="" aria-hidden="true" />
-      <div class="hero-shot-stack" data-tilt>
-        <div class="hero-shot-card">
-          <img
-            class="hero-shot-image"
-            src={`${import.meta.env.BASE_URL}assets/workspace_screenshot.png`}
-            alt={heroFrame.alt}
-          />
-          <span class="hero-shot-badge hero-shot-badge-top">{heroFrame.badgeTop}</span>
-          <span class="hero-shot-badge hero-shot-badge-bottom">{heroFrame.badgeBottom}</span>
-        </div>
+    <div class="hero-preview" data-preview-area data-reveal>
+      <div class="preview-switcher" data-preview-switcher aria-label="Product feature tabs">
+        {previewFeatures.map((feature, index) => (
+          <button
+            class:list={["preview-switcher-button", { "is-active": index === 0 }]}
+            type="button"
+            data-preview-feature={feature.id}
+            aria-selected={index === 0 ? "true" : "false"}
+          >
+            <strong>{feature.label}</strong>
+          </button>
+        ))}
+      </div>
 
-        <div class="hero-shot-note">
-          <span class="card-index">{heroFrame.noteLabel}</span>
-          <strong>{heroFrame.noteTitle}</strong>
-          <p>{heroFrame.noteBody}</p>
+      <div class="preview-feature-copy" data-preview-feature-copy>
+        {previewFeatures.map((feature, index) => (
+          <article class:list={["preview-feature-panel", { "is-active": index === 0 }]} data-preview-feature-panel={feature.id}>
+            <span>{String(index + 1).padStart(2, "0")}</span>
+            <strong>{feature.label}</strong>
+            <p>{feature.summary}</p>
+          </article>
+        ))}
+      </div>
+
+      <div class="product-preview-mount">
+        <div data-product-preview data-locale={locale} data-feature={previewFeatures[0].id}>
+          <div class="product-preview-fallback">
+            <strong>{previewFallback.title}</strong>
+            <p>{previewFallback.body}</p>
+          </div>
         </div>
       </div>
+      <script is:inline type="module" src={`${productPreviewBase}product-preview.js`}></script>
+      <script is:inline>
+        const initPreviewSwitchers = () => {
+          document.querySelectorAll("[data-preview-switcher]").forEach((switcher) => {
+            if (switcher.dataset.previewSwitcherBound === "true") {
+              return;
+            }
+
+            switcher.dataset.previewSwitcherBound = "true";
+            const previewArea = switcher.closest("[data-preview-area]") ?? document;
+            const buttons = Array.from(switcher.querySelectorAll("[data-preview-feature]"));
+            const panels = Array.from(previewArea.querySelectorAll("[data-preview-feature-panel]"));
+
+            buttons.forEach((button) => {
+              button.addEventListener("click", () => {
+                const feature = button.dataset.previewFeature;
+
+                buttons.forEach((item) => {
+                  const isActive = item === button;
+                  item.classList.toggle("is-active", isActive);
+                  item.setAttribute("aria-selected", String(isActive));
+                });
+
+                panels.forEach((panel) => {
+                  panel.classList.toggle("is-active", panel.dataset.previewFeaturePanel === feature);
+                });
+
+                window.dispatchEvent(
+                  new CustomEvent("logk-preview:set-feature", {
+                    detail: { feature }
+                  })
+                );
+              });
+            });
+          });
+        };
+
+        initPreviewSwitchers();
+        document.addEventListener("astro:page-load", initPreviewSwitchers);
+      </script>
     </div>
   </section>
 

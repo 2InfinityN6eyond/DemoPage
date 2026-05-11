@@ -41,7 +41,43 @@ export const en: SiteDictionary = {
       { value: "1 question", label: "fan out a prompt to multiple models at once" },
       { value: "live estimate", label: "preview expected credits before you run" },
       { value: "privacy filter", label: "block or redact sensitive information before dispatch" }
-    ]
+    ],
+    previewFeatures: [
+      {
+        id: "projects",
+        label: "Projects",
+        summary: "Organize AI workspaces by goal, owners, and reusable workflow presets."
+      },
+      {
+        id: "agents",
+        label: "Agents",
+        summary: "Configure role-based delegates for drafting, critique, and verification."
+      },
+      {
+        id: "chats",
+        label: "Chats",
+        summary: "Run one conversation across multiple models while preserving context."
+      },
+      {
+        id: "usage",
+        label: "Usage",
+        summary: "Review request and token usage trends by team and workflow."
+      },
+      {
+        id: "spending",
+        label: "Spending",
+        summary: "Track credits and budget impact before and after delegated runs."
+      },
+      {
+        id: "billing",
+        label: "Billing",
+        summary: "Manage invoices, payment methods, and account-level billing controls."
+      }
+    ],
+    previewFallback: {
+      title: "LogK console",
+      body: "An interactive preview of Projects, Agents, Chats, Usage, Spending, and Billing surfaces."
+    }
   },
   trust: [
     "Built for ChatGPT, Claude, Gemini, and more",

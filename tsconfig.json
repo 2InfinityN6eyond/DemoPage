@@ -7,5 +7,11 @@
         "src/*"
       ]
     }
-  }
+  },
+  "exclude": [
+    "dist",
+    "node_modules",
+    "product-preview",
+    "public/product-preview"
+  ]
 }

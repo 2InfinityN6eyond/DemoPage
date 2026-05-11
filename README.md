@@ -13,7 +13,7 @@ This repository is designed to stay simple enough for a small team, while remain
 - A bilingual marketing site with `en` and `ko` routes
 - A design system with light and dark themes
 - A homepage and product page built from reusable page components
-- A detached `capture-lab/` used only to create screenshot-ready mockups that can later be imported as static assets
+- A foundation for an embedded `product-preview` app that can later replace static screenshots
 
 ## Core Principles
 
@@ -29,8 +29,8 @@ These are the architectural rules that keep the project manageable:
    Header, footer, theme toggle, locale switcher, and global client-side behavior live in shared components.
 5. **Static assets are explicit.**
    Screenshots and decorative images live in `public/assets/`.
-6. **Mockup generation is isolated.**
-   Screenshot-only prototype pages live in `capture-lab/`, not in the Astro component tree.
+6. **Product previews stay bounded.**
+   Future interactive product visuals should live behind a clear `product-preview` boundary instead of being scattered through homepage components.
 
 ## Tech Stack
 
@@ -40,7 +40,7 @@ These are the architectural rules that keep the project manageable:
 | Styling | Global CSS | Fast to iterate for a landing page and easy to deploy |
 | Language support | Astro i18n + typed dictionaries | Clean locale routing and controlled copy structure |
 | Interactivity | Small client script in `ClientInit.astro` | Keeps the site mostly static while enabling polished motion |
-| Visual mockups | Detached HTML/CSS/JS in `capture-lab/` | Lets you design screenshot assets without coupling them to Astro |
+| Product visuals | Static assets now, future `product-preview` app later | Keeps the homepage fast while leaving room for an interactive embedded preview |
 
 ## Quick Start
 
@@ -101,8 +101,18 @@ SITE_URL=https://username.github.io BASE_PATH=/PAGE_DEMO npm run build
 .
 ├── astro.config.mjs
 ├── package.json
+├── product-preview/
+│   ├── package.json                 # React/Vite embedded preview package
+│   ├── src/
+│   │   ├── components/              # preview-only UI pieces
+│   │   ├── demo-data/               # local product scenarios
+│   │   ├── state/                   # local preview state
+│   │   ├── styles/                  # namespaced preview CSS
+│   │   └── main.tsx                 # mounts into [data-product-preview]
+│   └── vite.config.ts               # builds into public/product-preview/
 ├── public/
-│   └── assets/                     # screenshots and decorative static assets
+│   ├── assets/                     # screenshots and decorative static assets
+│   └── product-preview/            # generated preview build artifacts
 ├── src/
 │   ├── components/
 │   │   ├── ClientInit.astro        # global client-side interactions
@@ -126,7 +136,6 @@ SITE_URL=https://username.github.io BASE_PATH=/PAGE_DEMO npm run build
 │   ├── utils/
 │   │   └── i18n.ts                 # locale helpers
 │   └── content.config.ts           # currently empty; no content collections active
-├── capture-lab/                    # detached HTML mockup workspace for screenshots
 └── README.md
 ```
 
@@ -144,6 +153,8 @@ flowchart LR
     Page --> Shared["Shared UI<br/>Header, Footer, ThemeToggle, LanguageSwitcher"]
     Page --> Dict["Locale Dictionary<br/>src/i18n/messages/en.ts<br/>src/i18n/messages/ko.ts"]
     Page --> Assets["Static Assets<br/>public/assets/*"]
+    Page --> Preview["Embedded Product Preview<br/>public/product-preview/*"]
+    Preview --> PreviewSource["React/Vite Source<br/>product-preview/src/*"]
 
     Dict --> Schema["Typed Contract<br/>src/i18n/schema.ts"]
 ```
@@ -220,9 +231,9 @@ flowchart TD
     Behavior -- Yes --> Client["Edit src/components/ClientInit.astro"]
     Behavior -- No --> Asset{"Is it an image or screenshot?"}
     Asset -- Yes --> Assets["Replace or add files in public/assets/"]
-    Asset -- No --> Mockup{"Is it screenshot-only UI exploration?"}
-    Mockup -- Yes --> Lab["Edit capture-lab/*"]
-    Mockup -- No --> Config["Check astro.config.mjs or utils"]
+    Asset -- No --> Preview{"Is it an embedded product preview?"}
+    Preview -- Yes --> ProductPreview["Add or edit product-preview/"]
+    Preview -- No --> Config["Check astro.config.mjs or utils"]
 ```
 
 ## Directory Details
@@ -269,13 +280,31 @@ If a component appears across multiple pages, it belongs here rather than under 
 
 Purpose: Astro-rendered illustration/mockup components used inside the site itself.
 
-This is different from `capture-lab/`.
+These components are part of the Astro app and should remain lightweight. If product visuals grow into a stateful, responsive demo surface, move that work into a dedicated `product-preview/` app boundary instead of expanding these components indefinitely.
 
-- `src/components/mockups/` is part of the Astro app
-- `capture-lab/` is not part of the Astro app
+### `product-preview/`
 
-Use Astro mockup components when you want stylized in-page visuals.
-Use `capture-lab/` when you want screenshot capture assets.
+Purpose: responsive React/Vite product preview embedded into the homepage hero.
+
+This package owns:
+
+- local demo data for providers, models, privacy findings, traces, and answers
+- app chrome copy for the embedded preview shell
+- scenario data for homepage feature states such as routing, cost planning, privacy, synthesis, and audit trace
+- preview-only React state and interactions
+- model selection, run mode, cost estimate, privacy masking, trace, and comparison UI
+- namespaced CSS under the `lpv-` prefix
+- a Vite library build that emits stable files into `public/product-preview/`
+
+The Astro homepage mounts it through a single DOM entrypoint:
+
+```html
+<div data-product-preview data-locale="en" data-feature="model-router"></div>
+```
+
+The homepage feature tabs stay in Astro and dispatch `logk-preview:set-feature`. The tab labels and explanatory copy live in the typed i18n dictionaries. The React preview listens for that event and swaps to the matching scenario. This keeps the marketing layout static while allowing the embedded product surface to become richer over time.
+
+The homepage should not import React internals directly. Keep this boundary stable so the preview can later grow into multiple screens without turning the marketing site into the product app.
 
 ### `src/i18n/`
 
@@ -343,25 +372,6 @@ Examples:
 
 Use this directory for final assets that the Astro site should ship directly.
 
-### `capture-lab/`
-
-Purpose: detached visual-only mockup workspace.
-
-This directory exists to create screenshot material without introducing experimental UI complexity into the Astro app.
-
-Use it when:
-
-- you want a realistic dashboard screenshot
-- you want to experiment visually without touching production components
-- you want to capture PNG assets and move them into `public/assets/`
-
-Do not use it for:
-
-- actual production routes
-- shared navigation
-- translated marketing copy
-- persistent business logic
-
 ## Multilingual Structure
 
 The project uses locale-prefixed routes and typed dictionaries.
@@ -413,11 +423,29 @@ Guideline:
 - Put only site-wide enhancements here.
 - If a behavior belongs to one section only and becomes complex, extract it into a dedicated client island or script.
 
-## Screenshot Workflow
+## Product Visual Workflow
 
-The project supports two ways to show product visuals:
+The homepage hero now uses the embedded `product-preview` app. Static screenshots remain useful for deeper product sections and fallback material.
 
-### Option A: use existing captured assets
+### Current hero path: embedded `product-preview`
+
+1. Edit preview UI under `product-preview/src/`
+2. Run `npm run build:preview` to emit static files into `public/product-preview/`
+3. Astro mounts the preview in `HomePage.astro`
+4. The preview reads `data-locale` so it can render English or Korean copy
+5. The homepage feature tabs dispatch `logk-preview:set-feature` to switch preview scenarios
+
+Useful commands:
+
+```bash
+npm run build:preview
+npm run check:preview
+npm run dev:preview
+```
+
+`public/product-preview/` is generated output and is ignored by git. The root `npm run build` command rebuilds it before Astro builds the static site.
+
+### Screenshot path: use captured assets
 
 1. Create or capture a screen image
 2. Save it into `public/assets/`
@@ -428,15 +456,7 @@ This is the current approach for:
 - `workspace_screenshot.png`
 - `pricing_screenshot.png`
 
-### Option B: design a screenshot first in `capture-lab/`
-
-1. Build a visual-only screen in `capture-lab/*.html`
-2. Run a local static server
-3. Capture the screen as PNG
-4. Move the final image into `public/assets/`
-5. Use that asset in the Astro pages
-
-This keeps the production homepage cleaner than trying to build every dashboard mockup directly in Astro.
+This keeps the homepage fast and static while allowing the product preview to evolve with the real product UI.
 
 ## GitHub Pages Deployment
 
@@ -533,18 +553,11 @@ For future edits, use this order:
 2. Update page composition
 3. Update shared components only if needed
 4. Update styling
-5. Run `npm run check`
-6. Run `npm run build`
+5. Update `product-preview/` only when the embedded product surface changes
+6. Run `npm run check`
+7. Run `npm run build`
 
 That keeps content, structure, and visual changes easy to reason about.
-
-## Capture Lab
-
-There is a separate README for the mockup workspace:
-
-- [`capture-lab/README.md`](./capture-lab/README.md)
-
-Use that directory when you want visual-only product screens for screenshot capture.
 
 ## Summary
 
@@ -555,6 +568,6 @@ This repository is intentionally organized around a few strong boundaries:
 - shared UI
 - localization
 - static assets
-- detached screenshot prototyping
+- product preview boundary
 
 If you preserve those boundaries, the project will stay understandable even as the homepage, product page, and mockup library grow.

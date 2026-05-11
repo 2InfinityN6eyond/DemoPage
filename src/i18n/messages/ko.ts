@@ -41,7 +41,43 @@ export const ko: SiteDictionary = {
       { value: "1 question", label: "하나의 질문을 여러 모델에 동시에 fan-out" },
       { value: "live estimate", label: "실행 전에 예상 크레딧 비용을 확인" },
       { value: "privacy filter", label: "민감 정보는 위임 전에 차단 또는 가림 처리" }
-    ]
+    ],
+    previewFeatures: [
+      {
+        id: "projects",
+        label: "프로젝트",
+        summary: "목표, 담당자, 재사용 워크플로 기준으로 AI 워크스페이스를 구성합니다."
+      },
+      {
+        id: "agents",
+        label: "에이전트",
+        summary: "초안, 비판, 검증 역할별 위임 에이전트를 설정합니다."
+      },
+      {
+        id: "chats",
+        label: "채팅",
+        summary: "하나의 대화를 여러 모델에 위임하고 맥락을 유지합니다."
+      },
+      {
+        id: "usage",
+        label: "사용량",
+        summary: "팀과 워크플로 단위 요청/토큰 사용량 추이를 확인합니다."
+      },
+      {
+        id: "spending",
+        label: "지출",
+        summary: "위임 실행 전후 크레딧/예산 영향을 추적합니다."
+      },
+      {
+        id: "billing",
+        label: "과금",
+        summary: "청구서, 결제수단, 계정 과금 설정을 관리합니다."
+      }
+    ],
+    previewFallback: {
+      title: "LogK 콘솔",
+      body: "프로젝트, 에이전트, 채팅, 사용량, 지출, 과금 화면을 보여주는 인터랙티브 프리뷰입니다."
+    }
   },
   trust: [
     "ChatGPT, Claude, Gemini 등 다양한 모델 대응",

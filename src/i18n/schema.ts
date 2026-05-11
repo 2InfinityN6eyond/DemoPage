@@ -8,6 +8,14 @@ export type NavItem = {
   href: string;
 };
 
+export type PreviewFeatureId =
+  | "projects"
+  | "agents"
+  | "chats"
+  | "usage"
+  | "spending"
+  | "billing";
+
 export type SiteDictionary = {
   meta: {
     siteName: string;
@@ -39,6 +47,15 @@ export type SiteDictionary = {
     primaryCta: string;
     secondaryCta: string;
     metrics: Array<{ value: string; label: string }>;
+    previewFeatures: Array<{
+      id: PreviewFeatureId;
+      label: string;
+      summary: string;
+    }>;
+    previewFallback: {
+      title: string;
+      body: string;
+    };
   };
   trust: string[];
   solution: {

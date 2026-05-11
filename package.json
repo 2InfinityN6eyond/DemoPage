@@ -2,18 +2,24 @@
   "name": "page-demo",
   "private": true,
   "type": "module",
+  "workspaces": [
+    "product-preview"
+  ],
   "scripts": {
-    "dev": "astro dev",
-    "start": "astro dev",
-    "build": "astro build",
+    "dev": "npm run build:preview && astro dev",
+    "start": "npm run dev",
+    "build": "npm run build:preview && astro build",
+    "build:preview": "npm --workspace product-preview run build",
+    "dev:preview": "npm --workspace product-preview run dev",
     "preview": "astro preview",
-    "check": "astro check"
+    "check": "npm run check:preview && NODE_OPTIONS=--max-old-space-size=6144 astro check",
+    "check:preview": "npm --workspace product-preview run check"
   },
   "dependencies": {
-    "astro": "^5.0.0"
+    "astro": "^6.3.1"
   },
   "devDependencies": {
-    "@astrojs/check": "^0.9.0",
+    "@astrojs/check": "^0.9.9",
     "typescript": "^5.0.0"
   }
 }
