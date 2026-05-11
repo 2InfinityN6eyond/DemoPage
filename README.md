@@ -464,6 +464,8 @@ This site is already configured for static output.
 
 For GitHub Pages, the main thing to get right is the base path.
 
+The repository includes a single GitHub Pages workflow at `.github/workflows/deploy.yml`. It uses Node 22 because Astro 6 requires a modern Node runtime. Do not re-add the older `gh-pages` deployment workflow; duplicate Pages workflows can race or fail independently.
+
 ### Recommended deployment model
 
 - Personal domain or root site:

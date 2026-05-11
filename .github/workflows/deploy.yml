@@ -18,8 +18,8 @@ jobs:
   build:
     runs-on: ubuntu-latest
     env:
-      SITE_URL: https://username.github.io/DemoPage
-      BASE_PATH: /DemoPage
+      SITE_URL: https://${{ github.repository_owner }}.github.io/${{ github.event.repository.name }}
+      BASE_PATH: /${{ github.event.repository.name }}
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -27,7 +27,7 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 22
           cache: npm
 
       - name: Install dependencies
