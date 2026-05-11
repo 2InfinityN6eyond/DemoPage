@@ -1,4 +1,4 @@
-[Github Demo Page](https://2infinityn6eyond.github.io/DemoPage/en/)
+[Github Demo Page](https://logk-dev.github.io/HomePage/en/?preview=projects)
 
 
 # LogK Homepage Demo
