@@ -44,6 +44,11 @@ export const en: SiteDictionary = {
     ],
     previewFeatures: [
       {
+        id: "chats",
+        label: "Chats",
+        summary: "Run one conversation across multiple models while preserving context."
+      },
+      {
         id: "projects",
         label: "Projects",
         summary: "Organize AI workspaces by goal, owners, and reusable workflow presets."
@@ -52,11 +57,6 @@ export const en: SiteDictionary = {
         id: "agents",
         label: "Agents",
         summary: "Configure role-based delegates for drafting, critique, and verification."
-      },
-      {
-        id: "chats",
-        label: "Chats",
-        summary: "Run one conversation across multiple models while preserving context."
       },
       {
         id: "usage",

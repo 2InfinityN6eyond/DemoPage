@@ -44,6 +44,11 @@ export const ko: SiteDictionary = {
     ],
     previewFeatures: [
       {
+        id: "chats",
+        label: "채팅",
+        summary: "하나의 대화를 여러 모델에 위임하고 맥락을 유지합니다."
+      },
+      {
         id: "projects",
         label: "프로젝트",
         summary: "목표, 담당자, 재사용 워크플로 기준으로 AI 워크스페이스를 구성합니다."
@@ -52,11 +57,6 @@ export const ko: SiteDictionary = {
         id: "agents",
         label: "에이전트",
         summary: "초안, 비판, 검증 역할별 위임 에이전트를 설정합니다."
-      },
-      {
-        id: "chats",
-        label: "채팅",
-        summary: "하나의 대화를 여러 모델에 위임하고 맥락을 유지합니다."
       },
       {
         id: "usage",
