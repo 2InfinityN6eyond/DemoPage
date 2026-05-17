@@ -5,6 +5,7 @@ export const CHATS: Chat[] = [
     id: "arch",
     title: "Backend Architecture",
     preview: "Which architecture fits best for real-time chat with 10k users?",
+    time: "2 min ago",
     runPlan: ["GPT-4o", "Claude Sonnet", "Synthesis"],
     turns: [
       {
@@ -38,6 +39,7 @@ export const CHATS: Chat[] = [
     id: "code",
     title: "Code Review",
     preview: "Review this Python paginate() function for edge cases",
+    time: "18 min ago",
     runPlan: ["Claude Opus", "Review"],
     turns: [
       {
@@ -63,6 +65,7 @@ export const CHATS: Chat[] = [
     id: "privacy",
     title: "Privacy Gateway",
     preview: "Process HR document with PII masking before routing",
+    time: "1 hr ago",
     runPlan: ["Privacy Gate", "GPT-4o", "Verifier"],
     turns: [
       {
@@ -89,6 +92,7 @@ export const CHATS: Chat[] = [
     id: "research",
     title: "Research Synthesis",
     preview: "Compare LoRA, QLoRA, and full fine-tuning for production",
+    time: "Yesterday",
     runPlan: ["GPT-4o", "Gemini Pro", "Claude Sonnet", "Synthesis"],
     turns: [
       {

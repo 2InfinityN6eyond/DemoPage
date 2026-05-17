@@ -1,5 +1,6 @@
 import { Settings, X } from "lucide-react";
-import type { Copy, Locale, TabId } from "../types";
+import type { Locale, TabId } from "../types";
+import type { Copy } from "../i18n";
 
 interface Props {
   copy: Copy;

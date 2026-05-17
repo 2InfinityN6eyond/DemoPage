@@ -1,16 +1,28 @@
 import { useState } from "react";
+import { PanelLeft, Plus, Search, X } from "lucide-react";
 import { CHATS } from "../data";
-import type { Chat, Copy } from "../types";
+import type { Chat } from "../types";
+import type { Copy } from "../i18n";
 
 interface Props {
   copy: Copy;
   productUrl: string;
+  sidebarOpen: boolean;
+  onSidebarToggle: () => void;
 }
 
-export default function ChatsPage({ copy, productUrl }: Props) {
+export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarToggle }: Props) {
   const [activeChat, setActiveChat] = useState<Chat>(CHATS[0]);
   const [prompt, setPrompt] = useState("");
   const [context, setContext] = useState("");
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchFocused, setSearchFocused] = useState(false);
+
+  const filteredChats = CHATS.filter((c) =>
+    searchQuery.trim() === "" ||
+    c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    c.preview.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   const totalCost = activeChat.turns
     .flatMap((t) => t.models ?? [])
@@ -19,33 +31,96 @@ export default function ChatsPage({ copy, productUrl }: Props) {
 
   return (
     <div className="lpv-feature-page lpv-console-page lpv-chats-page">
-      <div className="lpv-primary-sidebar">
+      <div className="lpv-primary-sidebar" data-open={sidebarOpen ? "true" : "false"}>
         <div className="lpv-primary-sidebar-head">
-          <strong>{copy.sidebar.title}</strong>
+          <button
+            className="lpv-sidebar-toggle-btn"
+            onClick={onSidebarToggle}
+            aria-label={copy.sidebar.toggle}
+            title={copy.sidebar.toggle}
+          >
+            <PanelLeft size={14} />
+          </button>
+          <span className="lpv-sidebar-head-title">{copy.sidebar.title}</span>
+          <button
+            className="lpv-new-chat-btn"
+            onClick={() => {
+              setActiveChat(CHATS[0]);
+              setPrompt("");
+              setContext("");
+            }}
+            aria-label={copy.sidebar.newChat}
+            title={copy.sidebar.newChat}
+          >
+            <Plus size={14} />
+          </button>
         </div>
+
+        <div className="lpv-sidebar-search-wrap">
+          <div className="lpv-sidebar-search" data-focused={searchFocused ? "true" : "false"}>
+            <Search size={12} className="lpv-search-icon" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              onFocus={() => setSearchFocused(true)}
+              onBlur={() => setSearchFocused(false)}
+              placeholder={copy.sidebar.search}
+              className="lpv-search-input"
+            />
+            {searchQuery && (
+              <button className="lpv-search-clear" onClick={() => setSearchQuery("")} aria-label="Clear">
+                <X size={10} />
+              </button>
+            )}
+          </div>
+        </div>
+
         <div className="lpv-primary-sidebar-list">
-          {CHATS.map((chat) => (
-            <button
-              key={chat.id}
-              data-active={activeChat.id === chat.id ? "true" : "false"}
-              onClick={() => {
-                setActiveChat(chat);
-                setPrompt("");
-                setContext("");
-              }}
-            >
-              <span>{chat.title}</span>
-              <small>{chat.preview}</small>
-            </button>
-          ))}
+          {filteredChats.length === 0 ? (
+            <div className="lpv-no-results">No results</div>
+          ) : (
+            filteredChats.map((chat) => (
+              <button
+                key={chat.id}
+                data-active={activeChat.id === chat.id ? "true" : "false"}
+                onClick={() => {
+                  setActiveChat(chat);
+                  setPrompt("");
+                  setContext("");
+                }}
+              >
+                <div className="lpv-chat-item-top">
+                  <span>{chat.title}</span>
+                  <time>{chat.time}</time>
+                </div>
+                <small>{chat.preview}</small>
+                <div className="lpv-chat-item-meta">
+                  {chat.runPlan.map((step) => (
+                    <span key={step} className="lpv-chat-model-chip">{step}</span>
+                  ))}
+                </div>
+              </button>
+            ))
+          )}
         </div>
       </div>
 
       <div className="lpv-chat-console">
         <div className="lpv-workspace-thread">
           <div className="lpv-thread-sticky">
-            <span>{copy.thread.label}</span>
-            <p>{activeChat.title}</p>
+            <button
+              className="lpv-sidebar-toggle-btn lpv-thread-toggle"
+              onClick={onSidebarToggle}
+              aria-label={copy.sidebar.toggle}
+              title={copy.sidebar.toggle}
+            >
+              <PanelLeft size={14} />
+            </button>
+            <div className="lpv-thread-meta">
+              <span>{copy.thread.label}</span>
+              <p>{activeChat.title}</p>
+            </div>
           </div>
           <div className="lpv-thread-scroll">
             {activeChat.turns.map((turn) => (

@@ -1,4 +1,5 @@
-import type { Copy, TabId } from "../types";
+import type { TabId } from "../types";
+import type { Copy } from "../i18n";
 
 interface Props {
   tab: TabId;

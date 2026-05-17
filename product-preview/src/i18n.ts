@@ -13,7 +13,7 @@ export const COPY = {
       context: "Add constraints, privacy rules, or routing context…",
       execute: "Run",
     },
-    sidebar: { title: "Conversations" },
+    sidebar: { title: "Conversations", newChat: "New conversation", search: "Search", toggle: "Toggle sidebar" },
     thread: { label: "active chat" },
     placeholder: {
       projects: { title: "Projects", body: "Group chats, agents, and saved run plans by project." },
@@ -35,7 +35,7 @@ export const COPY = {
       context: "제약 조건, 개인정보 규칙 또는 라우팅 컨텍스트를 추가하세요…",
       execute: "실행",
     },
-    sidebar: { title: "대화" },
+    sidebar: { title: "대화", newChat: "새 대화", search: "검색", toggle: "사이드바 토글" },
     thread: { label: "현재 채팅" },
     placeholder: {
       projects: { title: "프로젝트", body: "채팅, 에이전트, 저장된 실행 계획을 프로젝트로 그룹화합니다." },

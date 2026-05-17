@@ -13,6 +13,7 @@ export interface Chat {
   id: string;
   title: string;
   preview: string;
+  time: string;
   runPlan: string[];
   turns: Turn[];
 }

@@ -16,6 +16,7 @@ export default function App({ locale: initialLocale, feature, productUrl }: Prop
   const [tab, setTab] = useState<TabId>(FEATURE_TAB_MAP[feature] ?? "chats");
   const [theme, setTheme] = useState<"dark" | "light">("dark");
   const [settingsOpen, setSettingsOpen] = useState(false);
+  const [sidebarOpen, setSidebarOpen] = useState(true);
 
   useEffect(() => {
     const handler = (e: Event) => {
@@ -45,7 +46,7 @@ export default function App({ locale: initialLocale, feature, productUrl }: Prop
       />
       <div className="lpv-app-frame">
         {tab === "chats" ? (
-          <ChatsPage copy={copy} productUrl={productUrl} />
+          <ChatsPage copy={copy} productUrl={productUrl} sidebarOpen={sidebarOpen} onSidebarToggle={() => setSidebarOpen((v) => !v)} />
         ) : (
           <OtherPage tab={tab} copy={copy} />
         )}
