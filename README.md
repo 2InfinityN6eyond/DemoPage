@@ -36,7 +36,7 @@ These are the architectural rules that keep the project manageable:
 
 | Layer | Choice | Why |
 | --- | --- | --- |
-| Site framework | Astro 5 | Static output, simple routing, strong fit for GitHub Pages |
+| Site framework | Astro 6 | Static output, simple routing, strong fit for GitHub Pages |
 | Styling | Global CSS | Fast to iterate for a landing page and easy to deploy |
 | Language support | Astro i18n + typed dictionaries | Clean locale routing and controlled copy structure |
 | Interactivity | Small client script in `ClientInit.astro` | Keeps the site mostly static while enabling polished motion |
@@ -466,24 +466,60 @@ For GitHub Pages, the main thing to get right is the base path.
 
 The repository includes a single GitHub Pages workflow at `.github/workflows/deploy.yml`. It uses Node 22 because Astro 6 requires a modern Node runtime. Do not re-add the older `gh-pages` deployment workflow; duplicate Pages workflows can race or fail independently.
 
-### Recommended deployment model
+### Two-repo deployment model
 
-- Personal domain or root site:
-  - `SITE_URL=https://your-domain.com`
-  - no `BASE_PATH`
-- Project Pages URL such as `https://username.github.io/PAGE_DEMO/`:
-  - `SITE_URL=https://username.github.io`
-  - `BASE_PATH=/PAGE_DEMO`
+This project is pushed to two GitHub repositories. Each repo has different GitHub Pages settings.
 
-### Example build command
+**Personal repo** (project Pages, no custom domain):
 
-```bash
-SITE_URL=https://username.github.io BASE_PATH=/PAGE_DEMO npm run build
+No configuration needed — the workflow auto-computes values from the repository owner and name:
+
 ```
+SITE_URL  → https://<owner>.github.io/<repo>
+BASE_PATH → /<repo>
+```
+
+**Company repo** (custom domain):
+
+Set the following in GitHub repo **Settings → Secrets and variables → Actions → Variables**:
+
+| Variable | Value |
+|----------|-------|
+| `SITE_URL` | `https://www.logk.co.kr` |
+| `BASE_PATH` | `/` |
+| `CUSTOM_DOMAIN` | `www.logk.co.kr` |
+
+Setting `BASE_PATH=/` makes `normalizeBase()` return `undefined`, which removes the subpath prefix from all asset URLs. The `CUSTOM_DOMAIN` variable causes the workflow to write a `CNAME` file into the built output so GitHub Pages keeps your custom domain after each deploy.
 
 ### Why the base path matters
 
-All route generation and static asset references need to respect the GitHub Pages subpath. This repository already handles that through Astro config and `import.meta.env.BASE_URL`.
+All route generation and static asset references respect the GitHub Pages subpath through Astro config and `import.meta.env.BASE_URL`. When a custom domain is set, the site is served from the root `/`, so `BASE_PATH` must be absent or `/` — otherwise all CSS, JS, and asset URLs will 404.
+
+### Custom domain DNS setup (Gabia)
+
+To point `www.logk.co.kr` at GitHub Pages, add the following records in Gabia's DNS management panel:
+
+| Type | Host | Value | TTL |
+|------|------|-------|-----|
+| CNAME | `www` | `<org-github-username>.github.io` | 3600 |
+| A | `@` | `185.199.108.153` | 3600 |
+| A | `@` | `185.199.109.153` | 3600 |
+| A | `@` | `185.199.110.153` | 3600 |
+| A | `@` | `185.199.111.153` | 3600 |
+
+Replace `<org-github-username>` with the actual GitHub organization username that owns the company repo. The `A` records allow the apex domain `logk.co.kr` to also resolve; GitHub Pages will redirect it to `www.logk.co.kr` once the custom domain is verified.
+
+After adding DNS records:
+
+1. Wait for DNS propagation (typically 5–30 minutes, up to 48 hours).
+2. Go to company repo **Settings → Pages** and confirm the custom domain shows as verified.
+3. Enable **Enforce HTTPS** once the TLS certificate is issued (usually within a few minutes of verification).
+
+### Example local build with custom-domain settings
+
+```bash
+SITE_URL=https://www.logk.co.kr BASE_PATH=/ npm run build
+```
 
 ## How to Add a New Page Cleanly
 
