@@ -4,3 +4,4 @@ dist
 .astro
 product-preview/.vite
 public/product-preview/
+.claude/worktrees/
