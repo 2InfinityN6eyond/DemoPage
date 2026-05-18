@@ -1,9 +1,27 @@
-import { useState, useEffect } from "react";
+import { Component, type ReactNode, useState, useEffect } from "react";
 import ChromeBar from "./components/ChromeBar";
 import ChatsPage from "./components/ChatsPage";
-import OtherPage from "./components/OtherPage";
-import { COPY, TAB_IDS, FEATURE_TAB_MAP } from "./i18n";
+import PlaceholderPage from "./components/PlaceholderPage";
+import { COPY, FEATURE_TAB_MAP } from "./i18n";
 import type { Locale, TabId } from "./types";
+
+interface ErrorBoundaryState { error: Error | null }
+
+class ErrorBoundary extends Component<{ children: ReactNode }, ErrorBoundaryState> {
+  state: ErrorBoundaryState = { error: null };
+  static getDerivedStateFromError(error: Error) { return { error }; }
+  render() {
+    if (this.state.error) {
+      return (
+        <div className="lpv-error-boundary">
+          <strong>Preview unavailable</strong>
+          <small>{this.state.error.message}</small>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
 
 interface Props {
   locale: Locale;
@@ -29,28 +47,38 @@ export default function App({ locale: initialLocale, feature, productUrl }: Prop
   }, []);
 
   const copy = COPY[locale];
+  const toggleSidebar = () => setSidebarOpen((v) => !v);
+
+  const page = (() => {
+    switch (tab) {
+      case "chats":    return <ChatsPage copy={copy} locale={locale} productUrl={productUrl} sidebarOpen={sidebarOpen} onSidebarToggle={toggleSidebar} />;
+      case "projects":
+      case "agents":
+      case "usage":
+      case "spending":
+      case "billing":
+        return <PlaceholderPage copy={copy} tab={tab} />;
+    }
+  })();
 
   return (
-    <div className="lpv-shell" data-preview-theme={theme}>
-      <ChromeBar
-        copy={copy}
-        tabs={TAB_IDS}
-        activeTab={tab}
-        onTabChange={setTab}
-        settingsOpen={settingsOpen}
-        onSettingsToggle={() => setSettingsOpen((v) => !v)}
-        theme={theme}
-        onThemeChange={setTheme}
-        locale={locale}
-        onLocaleChange={setLocale}
-      />
-      <div className="lpv-app-frame">
-        {tab === "chats" ? (
-          <ChatsPage copy={copy} productUrl={productUrl} sidebarOpen={sidebarOpen} onSidebarToggle={() => setSidebarOpen((v) => !v)} />
-        ) : (
-          <OtherPage tab={tab} copy={copy} />
-        )}
+    <ErrorBoundary>
+      <div className="lpv-shell" data-preview-theme={theme}>
+        <ChromeBar
+          copy={copy}
+          activeTab={tab}
+          onTabChange={setTab}
+          settingsOpen={settingsOpen}
+          onSettingsToggle={() => setSettingsOpen((v) => !v)}
+          theme={theme}
+          onThemeChange={setTheme}
+          locale={locale}
+          onLocaleChange={setLocale}
+        />
+        <div className="lpv-app-frame">
+          {page}
+        </div>
       </div>
-    </div>
+    </ErrorBoundary>
   );
 }

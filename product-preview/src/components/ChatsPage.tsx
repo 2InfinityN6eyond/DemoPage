@@ -1,33 +1,45 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { PanelLeft, Plus, Search, X } from "lucide-react";
 import { CHATS } from "../data";
+import { formatRelativeTime } from "../i18n";
 import type { Chat } from "../types";
+import type { Locale } from "../types";
 import type { Copy } from "../i18n";
 
 interface Props {
   copy: Copy;
+  locale: Locale;
   productUrl: string;
   sidebarOpen: boolean;
   onSidebarToggle: () => void;
 }
 
-export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarToggle }: Props) {
+export default function ChatsPage({ copy, locale, productUrl, sidebarOpen, onSidebarToggle }: Props) {
   const [activeChat, setActiveChat] = useState<Chat>(CHATS[0]);
   const [prompt, setPrompt] = useState("");
   const [context, setContext] = useState("");
   const [searchQuery, setSearchQuery] = useState("");
   const [searchFocused, setSearchFocused] = useState(false);
 
-  const filteredChats = CHATS.filter((c) =>
-    searchQuery.trim() === "" ||
-    c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
-    c.preview.toLowerCase().includes(searchQuery.toLowerCase())
+  const filteredChats = useMemo(
+    () =>
+      CHATS.filter(
+        (c) =>
+          searchQuery.trim() === "" ||
+          c.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          c.preview.toLowerCase().includes(searchQuery.toLowerCase()),
+      ),
+    [searchQuery],
   );
 
-  const totalCost = activeChat.turns
-    .flatMap((t) => t.models ?? [])
-    .reduce((sum, m) => sum + parseFloat(m.cost.replace("$", "")), 0)
-    .toFixed(3);
+  const totalCost = useMemo(
+    () =>
+      activeChat.turns
+        .flatMap((t) => t.models ?? [])
+        .reduce((sum, m) => sum + m.cost, 0)
+        .toFixed(3),
+    [activeChat],
+  );
 
   return (
     <div className="lpv-feature-page lpv-console-page lpv-chats-page">
@@ -69,7 +81,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
               className="lpv-search-input"
             />
             {searchQuery && (
-              <button className="lpv-search-clear" onClick={() => setSearchQuery("")} aria-label="Clear">
+              <button className="lpv-search-clear" onClick={() => setSearchQuery("")} aria-label={copy.sidebar.clearSearch}>
                 <X size={10} />
               </button>
             )}
@@ -78,7 +90,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
 
         <div className="lpv-primary-sidebar-list">
           {filteredChats.length === 0 ? (
-            <div className="lpv-no-results">No results</div>
+            <div className="lpv-no-results">{copy.sidebar.noResults}</div>
           ) : (
             filteredChats.map((chat) => (
               <button
@@ -92,7 +104,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
               >
                 <div className="lpv-chat-item-top">
                   <span>{chat.title}</span>
-                  <time>{chat.time}</time>
+                  <time>{formatRelativeTime(chat.time, locale)}</time>
                 </div>
                 <small>{chat.preview}</small>
                 <div className="lpv-chat-item-meta">
@@ -136,7 +148,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
                       <div key={model.name} className="lpv-answer-doc">
                         <header>
                           <strong>{model.name}</strong>
-                          <small>{model.provider} · {model.cost}</small>
+                          <small>{model.provider} · ${model.cost.toFixed(3)}</small>
                         </header>
                         <p>{model.body}</p>
                         {model.privacyNote && (
@@ -146,7 +158,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
                     ))}
                     {turn.synthesis && (
                       <div className="lpv-synthesis-doc">
-                        <strong>Synthesis</strong>
+                        <strong>{copy.thread.synthesis}</strong>
                         <p>{turn.synthesis}</p>
                       </div>
                     )}
@@ -181,7 +193,7 @@ export default function ChatsPage({ copy, productUrl, sidebarOpen, onSidebarTogg
           </div>
           <div className="lpv-composer-footer">
             <small className="lpv-faint" style={{ color: "var(--lpv-faint)", fontSize: "11px" }}>
-              ~${totalCost} estimated
+              {copy.composer.estimatedCost.replace("{cost}", totalCost)}
             </small>
             <button
               className="lpv-run-button"

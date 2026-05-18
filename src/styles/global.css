@@ -9,6 +9,8 @@
   --text: #121721;
   --text-soft: rgba(18, 23, 33, 0.72);
   --text-faint: rgba(18, 23, 33, 0.52);
+  --text-muted: rgba(18, 23, 33, 0.6);
+  --headline-shift: rgba(18, 23, 33, 0.66);
   --accent: #0f766e;
   --accent-bright: #12b89b;
   --accent-soft: rgba(18, 184, 155, 0.14);
@@ -50,6 +52,8 @@ html[data-theme="dark"] {
   --text: #edf4ff;
   --text-soft: rgba(237, 244, 255, 0.76);
   --text-faint: rgba(237, 244, 255, 0.52);
+  --text-muted: rgba(237, 244, 255, 0.6);
+  --headline-shift: rgba(237, 244, 255, 0.56);
   --accent: #37cbb2;
   --accent-bright: #71e6cf;
   --accent-soft: rgba(55, 203, 178, 0.18);
@@ -364,7 +368,7 @@ p {
 
 .headline-shift {
   display: block;
-  color: rgba(18, 23, 33, 0.66);
+  color: var(--headline-shift);
 }
 
 .hero-lede {

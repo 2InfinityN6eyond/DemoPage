@@ -2,7 +2,7 @@
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import type { Locale, SiteDictionary } from "@/i18n/schema";
-import { localizedPath } from "@/utils/i18n";
+import { getLanguageOptions, localizedPath } from "@/utils/i18n";
 
 interface Props {
   locale: Locale;
@@ -12,16 +12,11 @@ interface Props {
 const { locale, dictionary } = Astro.props;
 const productPath = localizedPath(locale, "product");
 const homePath = localizedPath(locale);
-const languageOptions = [
-  { label: "EN", href: localizedPath("en"), active: locale === "en" },
-  { label: "KO", href: localizedPath("ko"), active: locale === "ko" }
-];
+const languageOptions = getLanguageOptions(locale);
 const productPreviewBase = `${import.meta.env.BASE_URL}product-preview/`;
 const previewFeatures = dictionary.hero.previewFeatures;
-const previewFallback = dictionary.hero.previewFallback;
+const previewJsSrc = `${productPreviewBase}product-preview.js${import.meta.env.PROD ? `?v=${Date.now()}` : ""}`;
 ---
-
-<link rel="stylesheet" href={`${productPreviewBase}product-preview.css`} />
 
 <Header
   locale={locale}
@@ -84,13 +79,9 @@ const previewFallback = dictionary.hero.previewFallback;
 
       <div class="product-preview-mount">
         <div data-product-preview data-locale={locale} data-feature={previewFeatures[0].id} data-product-url={productPath}>
-          <div class="product-preview-fallback">
-            <strong>{previewFallback.title}</strong>
-            <p>{previewFallback.body}</p>
-          </div>
         </div>
       </div>
-      <script is:inline type="module" src={`${productPreviewBase}product-preview.js`}></script>
+      <script is:inline type="module" src={previewJsSrc}></script>
       <script is:inline>
         const initPreviewSwitchers = () => {
           document.querySelectorAll("[data-preview-switcher]").forEach((switcher) => {

@@ -3,3 +3,4 @@ node_modules
 dist
 .astro
 product-preview/.vite
+public/product-preview/

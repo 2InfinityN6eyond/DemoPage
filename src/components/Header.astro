@@ -33,7 +33,15 @@ const homePath = localizedPath(locale);
     <span class="brand-word">{dictionary.meta.siteName}</span>
   </a>
 
-  <button class="nav-toggle" type="button" aria-expanded="false" aria-label="Open menu" data-nav-toggle>
+  <button
+    class="nav-toggle"
+    type="button"
+    aria-expanded="false"
+    aria-label={dictionary.nav.menuOpen}
+    data-nav-toggle
+    data-menu-open-label={dictionary.nav.menuOpen}
+    data-menu-close-label={dictionary.nav.menuClose}
+  >
     <span></span>
     <span></span>
   </button>

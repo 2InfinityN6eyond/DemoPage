@@ -1,6 +1,8 @@
 <script>
   const STORAGE_KEY = "logk-theme";
   let showcaseInterval: number | undefined;
+  let revealObserver: IntersectionObserver | undefined;
+  let counterObserver: IntersectionObserver | undefined;
 
   const getPreferredTheme = (): "light" | "dark" => {
     const stored = localStorage.getItem(STORAGE_KEY);
@@ -65,7 +67,7 @@
 
       tabs.forEach((tab) => {
         tab.classList.toggle("is-active", tab.dataset.tab === name);
-      });
+    });
 
       panels.forEach((panel) => {
         panel.classList.toggle("is-active", panel.dataset.panel === name);
@@ -88,17 +90,22 @@
   };
 
   const initReveal = (reducedMotion: boolean) => {
+    if (revealObserver) {
+      revealObserver.disconnect();
+      revealObserver = undefined;
+    }
+
     const revealItems = [...document.querySelectorAll<HTMLElement>("[data-reveal]")];
     if (revealItems.length === 0) {
       return;
     }
 
-    const observer = new IntersectionObserver(
+    revealObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             entry.target.classList.add("is-visible");
-            observer.unobserve(entry.target);
+            revealObserver!.unobserve(entry.target);
           }
         });
       },
@@ -110,17 +117,22 @@
 
     revealItems.forEach((item, index) => {
       item.style.transitionDelay = reducedMotion ? "0ms" : `${Math.min(index * 40, 220)}ms`;
-      observer.observe(item);
+      revealObserver!.observe(item);
     });
   };
 
   const initCounters = (reducedMotion: boolean) => {
+    if (counterObserver) {
+      counterObserver.disconnect();
+      counterObserver = undefined;
+    }
+
     const items = [...document.querySelectorAll<HTMLElement>("[data-count]")];
     if (items.length === 0) {
       return;
     }
 
-    const observer = new IntersectionObserver(
+    counterObserver = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) {
@@ -148,13 +160,13 @@
           };
 
           window.requestAnimationFrame(tick);
-          observer.unobserve(node);
+          counterObserver!.unobserve(node);
         });
       },
       { threshold: 0.45 }
     );
 
-    items.forEach((item) => observer.observe(item));
+    items.forEach((item) => counterObserver!.observe(item));
   };
 
   const initMobileMenu = () => {
@@ -174,8 +186,10 @@
 
     navToggle.addEventListener("click", () => {
       const expanded = navToggle.getAttribute("aria-expanded") === "true";
+      const openLabel = navToggle.dataset.menuOpenLabel ?? "Open menu";
+      const closeLabel = navToggle.dataset.menuCloseLabel ?? "Close menu";
       navToggle.setAttribute("aria-expanded", String(!expanded));
-      navToggle.setAttribute("aria-label", expanded ? "Open menu" : "Close menu");
+      navToggle.setAttribute("aria-label", expanded ? openLabel : closeLabel);
       header.classList.toggle("menu-open", !expanded);
       document.body.classList.toggle("menu-open", !expanded);
     });
@@ -185,13 +199,14 @@
       ...document.querySelectorAll<HTMLAnchorElement>(".header-actions a"),
       ...document.querySelectorAll<HTMLAnchorElement>(".header-controls a")
     ].forEach((link) => {
-        link.addEventListener("click", () => {
-          navToggle.setAttribute("aria-expanded", "false");
-          navToggle.setAttribute("aria-label", "Open menu");
-          header.classList.remove("menu-open");
-          document.body.classList.remove("menu-open");
-        });
+      link.addEventListener("click", () => {
+        const openLabel = navToggle.dataset.menuOpenLabel ?? "Open menu";
+        navToggle.setAttribute("aria-expanded", "false");
+        navToggle.setAttribute("aria-label", openLabel);
+        header.classList.remove("menu-open");
+        document.body.classList.remove("menu-open");
       });
+    });
   };
 
   const initPage = () => {

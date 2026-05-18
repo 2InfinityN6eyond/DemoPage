@@ -5,9 +5,8 @@ import { getDictionary } from "@/i18n/messages";
 
 const locale = "en";
 const dictionary = getDictionary(locale);
-const title = `${dictionary.meta.siteName} Mockups | Capture-ready product concepts`;
-const description =
-  "Original LogK mockups for model selection, answer comparison, privacy controls, and credit-based billing.";
+const title = `${dictionary.meta.siteName} Mockups | ${dictionary.mockupsPage.eyebrow}`;
+const description = dictionary.mockupsPage.description;
 ---
 
 <BaseLayout locale={locale} title={title} description={description}>

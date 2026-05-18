@@ -3,6 +3,19 @@
   box-sizing: border-box;
 }
 
+/* Isolate from host-page global styles (e.g. Astro's `p { color: var(--text-soft) }`) */
+.lpv-shell p,
+.lpv-shell h1,
+.lpv-shell h2,
+.lpv-shell h3,
+.lpv-shell h4,
+.lpv-shell h5,
+.lpv-shell h6 {
+  margin: 0;
+  font-family: Instrument Sans, sans-serif;
+  color: inherit;
+}
+
 .lpv-shell {
   --lpv-bg: #070b12;
   --lpv-bg-soft: #0f1620;
@@ -21,7 +34,8 @@
   flex-direction: column;
   width: 100%;
   min-width: 0;
-  height: 680px;
+  min-height: 680px;
+  max-height: 780px;
   overflow: hidden;
   border: 1px solid var(--lpv-line);
   border-radius: 14px;

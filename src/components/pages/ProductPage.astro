@@ -2,7 +2,7 @@
 import Footer from "@/components/Footer.astro";
 import Header from "@/components/Header.astro";
 import type { Locale, SiteDictionary } from "@/i18n/schema";
-import { localizedPath } from "@/utils/i18n";
+import { getLanguageOptions, localizedPath } from "@/utils/i18n";
 
 interface Props {
   locale: Locale;
@@ -11,32 +11,8 @@ interface Props {
 
 const { locale, dictionary } = Astro.props;
 const homePath = localizedPath(locale);
-const languageOptions = [
-  { label: "EN", href: localizedPath("en", "product"), active: locale === "en" },
-  { label: "KO", href: localizedPath("ko", "product"), active: locale === "ko" }
-];
-const gallery =
-  locale === "ko"
-    ? {
-        workspaceLabel: "Workspace",
-        workspaceTitle: "실제 워크스페이스 흐름",
-        workspaceBody: "모델 선택, 실행 제어, 개인정보 차단, 예상 비용이 하나의 제품 표면으로 읽히도록 구성합니다.",
-        workspaceAlt: "LogK workspace dashboard screenshot",
-        pricingLabel: "Pricing",
-        pricingTitle: "비용과 사용량을 시각적으로 보여주는 화면",
-        pricingBody: "가격은 별도 표가 아니라 실제 운영 화면처럼 보이게 하여, 크레딧 기반 결제를 더 신뢰할 수 있게 만듭니다.",
-        pricingAlt: "LogK pricing dashboard screenshot"
-      }
-    : {
-        workspaceLabel: "Workspace",
-        workspaceTitle: "A real workspace flow instead of an abstract demo",
-        workspaceBody: "Model choice, execution controls, privacy blocking, and spend estimation all read as one product surface.",
-        workspaceAlt: "LogK workspace dashboard screenshot",
-        pricingLabel: "Pricing",
-        pricingTitle: "Usage and spend presented as product UI",
-        pricingBody: "Pricing should feel like an operating surface, not a detached spreadsheet, so credit-based billing becomes easier to trust.",
-        pricingAlt: "LogK pricing dashboard screenshot"
-      };
+const languageOptions = getLanguageOptions(locale, "product");
+const gallery = dictionary.productPage.gallery;
 ---
 
 <Header

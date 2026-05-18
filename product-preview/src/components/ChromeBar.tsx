@@ -4,7 +4,6 @@ import type { Copy } from "../i18n";
 
 interface Props {
   copy: Copy;
-  tabs: TabId[];
   activeTab: TabId;
   onTabChange: (tab: TabId) => void;
   settingsOpen: boolean;
@@ -69,7 +68,7 @@ export default function ChromeBar({
       </nav>
 
       <div className="lpv-chrome-actions">
-        <button className="lpv-settings-trigger" onClick={onSettingsToggle} aria-label="Settings">
+        <button className="lpv-settings-trigger" onClick={onSettingsToggle} aria-label={copy.settings.ariaLabel}>
           <Settings size={16} />
         </button>
       </div>
@@ -85,7 +84,7 @@ export default function ChromeBar({
           <div className="lpv-settings-card">
             <div className="lpv-settings-head">
               <span>{copy.settings.title}</span>
-              <button onClick={onSettingsToggle} aria-label="Close">
+              <button onClick={onSettingsToggle} aria-label={copy.settings.closeLabel}>
                 <X size={14} />
               </button>
             </div>

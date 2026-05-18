@@ -13,3 +13,11 @@ export const localizedPath = (locale: Locale, pathname = "") => {
   const suffix = normalizedPath ? `/${normalizedPath}/` : "/";
   return `${base}/${locale}${suffix}`.replace(/\/{2,}/g, "/");
 };
+
+export const getLanguageOptions = (currentLocale: Locale, pathname = "") => {
+  return locales.map((locale) => ({
+    label: locale.toUpperCase(),
+    href: localizedPath(locale, pathname),
+    active: locale === currentLocale
+  }));
+};

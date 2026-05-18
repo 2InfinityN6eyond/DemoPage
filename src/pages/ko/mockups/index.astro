@@ -5,9 +5,8 @@ import { getDictionary } from "@/i18n/messages";
 
 const locale = "ko";
 const dictionary = getDictionary(locale);
-const title = `${dictionary.meta.siteName} Mockups | 캡처용 제품 목업`;
-const description =
-  "모델 선택, 답변 비교, 개인정보 제어, 크레딧 기반 과금을 위한 LogK 오리지널 목업 화면입니다.";
+const title = `${dictionary.meta.siteName} Mockups | ${dictionary.mockupsPage.eyebrow}`;
+const description = dictionary.mockupsPage.description;
 ---
 
 <BaseLayout locale={locale} title={title} description={description}>

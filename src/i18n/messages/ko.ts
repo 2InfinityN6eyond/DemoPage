@@ -19,7 +19,9 @@ export const ko: SiteDictionary = {
     product: "제품",
     talkToSales: "도입 문의",
     home: "홈",
-    bookDemo: "데모 요청"
+    bookDemo: "데모 요청",
+    menuOpen: "메뉴 열기",
+    menuClose: "메뉴 닫기"
   },
   theme: {
     light: "라이트",
@@ -74,10 +76,6 @@ export const ko: SiteDictionary = {
         summary: "청구서, 결제수단, 계정 과금 설정을 관리합니다."
       }
     ],
-    previewFallback: {
-      title: "LogK 콘솔",
-      body: "프로젝트, 에이전트, 채팅, 사용량, 지출, 과금 화면을 보여주는 인터랙티브 프리뷰입니다."
-    }
   },
   trust: [
     "ChatGPT, Claude, Gemini 등 다양한 모델 대응",
@@ -229,7 +227,7 @@ export const ko: SiteDictionary = {
     secondaryCta: "제품 상세 보기"
   },
   footer: {
-    copyright: "GitHub Pages용 Astro 데모로 제작되었습니다."
+    copyright: "© LogK"
   },
   productPage: {
     eyebrow: "제품",
@@ -300,6 +298,49 @@ export const ko: SiteDictionary = {
     nextBody:
       "실제 회사 사이트에서는 이 페이지를 가격, 개인정보 보호 보장, 모델 커버리지, 엔터프라이즈 워크플로 설명으로 확장할 수 있습니다.",
     primaryCta: "제품 데모 요청",
-    secondaryCta: "홈으로 돌아가기"
+    secondaryCta: "홈으로 돌아가기",
+    gallery: {
+      workspaceLabel: "Workspace",
+      workspaceTitle: "실제 워크스페이스 흐름",
+      workspaceBody: "모델 선택, 실행 제어, 개인정보 차단, 예상 비용이 하나의 제품 표면으로 읽히도록 구성합니다.",
+      workspaceAlt: "LogK workspace dashboard screenshot",
+      pricingLabel: "Pricing",
+      pricingTitle: "비용과 사용량을 시각적으로 보여주는 화면",
+      pricingBody: "가격은 별도 표가 아니라 실제 운영 화면처럼 보이게 하여, 크레딧 기반 결제를 더 신뢰할 수 있게 만듭니다.",
+      pricingAlt: "LogK pricing dashboard screenshot"
+    }
+  },
+  mockupsPage: {
+    eyebrow: "캡처용 목업",
+    title: "LogK 제품 화면을 캡처 가능한 형태로 정리했습니다.",
+    description: "모델 선택, 답변 비교, 개인정보 제어, 크레딧 기반 과금을 위한 LogK 오리지널 목업 화면입니다.",
+    lede:
+      "LogK는 여러 AI 서비스를 위한 delegation layer입니다. 사용자는 여러 모델을 선택하고, 예상 비용을 보고, 개인정보 차단 정책을 적용한 뒤, 답변을 비교하거나 집계하고, 필요하면 자동 검증까지 실행할 수 있습니다.",
+    note:
+      "현재 카테고리 리더들의 UI에서 공통적으로 보이는 패턴은 명확합니다. 직접적인 hero 메시지, 바로 이해되는 dashboard surface, 가격/정책/관측성 모듈, 그리고 빠른 신뢰 형성입니다. 아래 목업은 그 패턴을 LogK의 제품 흐름에 맞게 재구성한 것입니다.",
+    primaryCta: "제품 페이지로 이동",
+    secondaryCta: "홈페이지로 돌아가기",
+    scenes: [
+      {
+        eyebrow: "Scene 01",
+        title: "Model board",
+        body: "모델 선택이 핵심 제품 경험이라는 점을 바로 보여주는 첫 화면입니다."
+      },
+      {
+        eyebrow: "Scene 02",
+        title: "Answer compare",
+        body: "단일 답변이 아니라 모델 간 차이와 합의를 보여주어 신뢰를 만듭니다."
+      },
+      {
+        eyebrow: "Scene 03",
+        title: "Privacy control",
+        body: "민감 정보 차단과 provider 정책을 시각적으로 설명하는 운영 화면입니다."
+      },
+      {
+        eyebrow: "Scene 04",
+        title: "Credit wallet",
+        body: "크레딧 기반 과금과 실행별 비용 가시성을 제품 화면으로 드러냅니다."
+      }
+    ]
   }
 };

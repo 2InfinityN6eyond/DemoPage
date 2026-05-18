@@ -86,7 +86,7 @@ The site is configured in [`astro.config.mjs`](./astro.config.mjs).
 
 | Variable | Purpose | Example |
 | --- | --- | --- |
-| `SITE_URL` | Canonical production site URL | `https://logk.ai` |
+| `SITE_URL` | Canonical site origin. For GitHub project Pages, do not include the repo path. | `https://username.github.io` |
 | `BASE_PATH` | Subpath for GitHub Pages project deployments | `/PAGE_DEMO` |
 
 ### Example: local build with GitHub Pages-style base path
@@ -475,7 +475,7 @@ This project is pushed to two GitHub repositories. Each repo has different GitHu
 No configuration needed — the workflow auto-computes values from the repository owner and name:
 
 ```
-SITE_URL  → https://<owner>.github.io/<repo>
+SITE_URL  → https://<owner>.github.io
 BASE_PATH → /<repo>
 ```
 

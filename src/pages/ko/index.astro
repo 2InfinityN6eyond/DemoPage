@@ -5,8 +5,10 @@ import { getDictionary } from "@/i18n/messages";
 
 const locale = "ko";
 const dictionary = getDictionary(locale);
+const productPreviewCss = `${import.meta.env.BASE_URL}product-preview/product-preview.css`;
 ---
 
 <BaseLayout locale={locale} title={dictionary.meta.homeTitle} description={dictionary.meta.homeDescription}>
+  <link slot="head" rel="stylesheet" href={productPreviewCss} />
   <HomePage locale={locale} dictionary={dictionary} />
 </BaseLayout>

@@ -166,7 +166,7 @@ After deployment:
 No repository variables are needed on the personal repo. The workflow automatically computes:
 
 ```
-SITE_URL  → https://hjp.github.io/PAGE_DEMO
+SITE_URL  → https://hjp.github.io
 BASE_PATH → /PAGE_DEMO
 ```
 

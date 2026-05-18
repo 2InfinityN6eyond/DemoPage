@@ -19,7 +19,9 @@ export const en: SiteDictionary = {
     product: "Product",
     talkToSales: "Talk to sales",
     home: "Home",
-    bookDemo: "Book a demo"
+    bookDemo: "Book a demo",
+    menuOpen: "Open menu",
+    menuClose: "Close menu"
   },
   theme: {
     light: "Light",
@@ -74,10 +76,6 @@ export const en: SiteDictionary = {
         summary: "Manage invoices, payment methods, and account-level billing controls."
       }
     ],
-    previewFallback: {
-      title: "LogK console",
-      body: "An interactive preview of Projects, Agents, Chats, Usage, Spending, and Billing surfaces."
-    }
   },
   trust: [
     "Built for ChatGPT, Claude, Gemini, and more",
@@ -229,7 +227,7 @@ export const en: SiteDictionary = {
     secondaryCta: "Explore product details"
   },
   footer: {
-    copyright: "Built as an Astro demo for GitHub Pages."
+    copyright: "© LogK"
   },
   productPage: {
     eyebrow: "Product",
@@ -300,6 +298,49 @@ export const en: SiteDictionary = {
     nextBody:
       "For a real company site, this page can grow into pricing, privacy guarantees, model coverage, and enterprise workflow details without overloading the homepage.",
     primaryCta: "Request a product demo",
-    secondaryCta: "Back to homepage"
+    secondaryCta: "Back to homepage",
+    gallery: {
+      workspaceLabel: "Workspace",
+      workspaceTitle: "A real workspace flow instead of an abstract demo",
+      workspaceBody: "Model choice, execution controls, privacy blocking, and spend estimation all read as one product surface.",
+      workspaceAlt: "LogK workspace dashboard screenshot",
+      pricingLabel: "Pricing",
+      pricingTitle: "Usage and spend presented as product UI",
+      pricingBody: "Pricing should feel like an operating surface, not a detached spreadsheet, so credit-based billing becomes easier to trust.",
+      pricingAlt: "LogK pricing dashboard screenshot"
+    }
+  },
+  mockupsPage: {
+    eyebrow: "Capture-ready mockups",
+    title: "LogK product surfaces prepared for screenshots and iteration.",
+    description: "Original LogK mockups for model selection, answer comparison, privacy controls, and credit-based billing.",
+    lede:
+      "LogK is the delegation layer for AI services. Users select several models, preview expected spend, apply privacy blocking, compare outputs, aggregate answers, and trigger automatic follow-up verification from one workspace.",
+    note:
+      "The category leaders repeat the same UI pattern: direct hero framing, an immediately legible dashboard surface, strong pricing or policy modules, and quick trust cues. These mockups translate those patterns into LogK's actual workflow instead of copying competitor assets.",
+    primaryCta: "Open product page",
+    secondaryCta: "Back to homepage",
+    scenes: [
+      {
+        eyebrow: "Scene 01",
+        title: "Model board",
+        body: "Lead with the idea that model selection is the primary product interaction."
+      },
+      {
+        eyebrow: "Scene 02",
+        title: "Answer compare",
+        body: "Show disagreement and synthesis explicitly instead of hiding behind one answer."
+      },
+      {
+        eyebrow: "Scene 03",
+        title: "Privacy control",
+        body: "Make sensitive-data blocking and provider policy visible as operating surfaces."
+      },
+      {
+        eyebrow: "Scene 04",
+        title: "Credit wallet",
+        body: "Turn credit-based billing and run-level spend into a product-native view."
+      }
+    ]
   }
 };
