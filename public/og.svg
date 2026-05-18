@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <!-- Logo mark gradient: green → blue → purple (mirrors CSS) -->
+    <linearGradient id="logo-grad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%"   stop-color="#31d0aa"/>
+      <stop offset="58%"  stop-color="#60a5fa"/>
+      <stop offset="100%" stop-color="#a78bfa"/>
+    </linearGradient>
+    <!-- Ambient glow: blue top-left -->
+    <radialGradient id="glow-blue" cx="14%" cy="20%" r="50%">
+      <stop offset="0%"   stop-color="#3b82f6" stop-opacity="0.20"/>
+      <stop offset="100%" stop-color="#3b82f6" stop-opacity="0"/>
+    </radialGradient>
+    <!-- Ambient glow: green bottom-right -->
+    <radialGradient id="glow-green" cx="88%" cy="80%" r="44%">
+      <stop offset="0%"   stop-color="#31d0aa" stop-opacity="0.16"/>
+      <stop offset="100%" stop-color="#31d0aa" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- ── Background ───────────────────────────────────── -->
+  <rect width="1200" height="630" fill="#070b12"/>
+  <rect width="1200" height="630" fill="url(#glow-blue)"/>
+  <rect width="1200" height="630" fill="url(#glow-green)"/>
+  <!-- Outer frame -->
+  <rect x="1" y="1" width="1198" height="628" rx="0" fill="none"
+        stroke="rgba(148,163,184,0.10)" stroke-width="1"/>
+
+  <!-- ── Logo mark ─────────────────────────────────────── -->
+  <!-- Outer rounded square: 100×100, rx=24, gradient fill -->
+  <rect x="96" y="196" width="100" height="100" rx="24"
+        fill="url(#logo-grad)" stroke="rgba(49,208,170,0.30)" stroke-width="1"/>
+  <!--
+    Inner diamond (3 sides visible — left-to-top segment omitted, mirrors
+    CSS border-left-color:transparent + rotate(45deg)).
+    Center: (146, 246), half-width: 21px
+    Vertices: top(146,225) right(167,246) bottom(146,267) left(125,246)
+    Draws: top → right → bottom → left  (left→top deliberately skipped)
+  -->
+  <path d="M 146,225 L 167,246 L 146,267 L 125,246"
+        fill="none" stroke="rgba(4,8,16,0.82)" stroke-width="6.5"
+        stroke-linejoin="round" stroke-linecap="round"/>
+
+  <!-- ── Brand ─────────────────────────────────────────── -->
+  <text x="222" y="265"
+        font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="82" font-weight="700" fill="#eff6ff" letter-spacing="-2">LogK</text>
+  <text x="224" y="297"
+        font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="21" fill="#6f7e92" letter-spacing="3">AI DELEGATION LAYER</text>
+
+  <!-- ── Divider ───────────────────────────────────────── -->
+  <line x1="96" y1="352" x2="1104" y2="352"
+        stroke="rgba(148,163,184,0.12)" stroke-width="1"/>
+
+  <!-- ── Value proposition ─────────────────────────────── -->
+  <text x="96" y="412"
+        font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="36" font-weight="500" fill="#c8d9f0">
+    Select models. Preview cost. Delegate once.
+  </text>
+  <text x="96" y="452"
+        font-family="system-ui,-apple-system,'Segoe UI',Helvetica,Arial,sans-serif"
+        font-size="25" fill="#6f7e92">
+    ChatGPT · Claude · Gemini · and more — one dashboard.
+  </text>
+
+  <!-- ── Feature chips ─────────────────────────────────── -->
+  <rect x="96"  y="490" width="192" height="36" rx="9"
+        fill="rgba(49,208,170,0.10)" stroke="rgba(49,208,170,0.30)" stroke-width="1"/>
+  <text x="192" y="513" text-anchor="middle"
+        font-family="'Courier New',Consolas,monospace"
+        font-size="13" fill="#31d0aa">Model Router</text>
+
+  <rect x="304" y="490" width="174" height="36" rx="9"
+        fill="rgba(96,165,250,0.10)" stroke="rgba(96,165,250,0.30)" stroke-width="1"/>
+  <text x="391" y="513" text-anchor="middle"
+        font-family="'Courier New',Consolas,monospace"
+        font-size="13" fill="#60a5fa">Cost Preview</text>
+
+  <rect x="494" y="490" width="180" height="36" rx="9"
+        fill="rgba(167,139,250,0.10)" stroke="rgba(167,139,250,0.30)" stroke-width="1"/>
+  <text x="584" y="513" text-anchor="middle"
+        font-family="'Courier New',Consolas,monospace"
+        font-size="13" fill="#a78bfa">Privacy Gate</text>
+
+  <!-- ── URL ───────────────────────────────────────────── -->
+  <text x="1104" y="597" text-anchor="end"
+        font-family="'Courier New',Consolas,monospace"
+        font-size="16" fill="rgba(148,163,184,0.40)">logk.co.kr</text>
+</svg>

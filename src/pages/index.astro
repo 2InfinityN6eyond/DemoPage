@@ -1,24 +1,58 @@
 ---
+// Root redirect page — keeps language-detection routing AND exposes OG meta
+// so link-preview crawlers don't read the bare "Redirecting…" title.
 import { localizedPath } from "@/utils/i18n";
 
 const fallbackPath = localizedPath("en");
-const basePath = import.meta.env.BASE_URL;
+const koPath       = localizedPath("ko");
+const basePath     = import.meta.env.BASE_URL;
+
+const site             = Astro.site;
+const hasCanonicalSite = site && site.hostname !== "example.com";
+const canonicalUrl     = hasCanonicalSite ? new URL("/", site).href : undefined;
+const ogImage          = hasCanonicalSite ? new URL("og.svg", site).href : "/og.svg";
+
+const title       = "LogK | AI Delegation Layer";
+const description =
+  "Select multiple AI models, preview expected cost, delegate a question across all of them, and compare or synthesize the results — one dashboard.";
 ---
 
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Redirecting…</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{title}</title>
+    <meta name="description" content={description} />
+    {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
+    <!-- Fallback redirect for crawlers that execute <meta refresh> -->
     <meta http-equiv="refresh" content={`0;url=${fallbackPath}`} />
-    <script is:inline define:vars={{ basePath }}>
-      const base = basePath;
-      const fallback = `${base}en/`.replace(/\/{2,}/g, "/");
-      const language = navigator.language.toLowerCase();
-      const nextPath = language.startsWith("ko") ? `${base}ko/` : fallback;
-      window.location.replace(nextPath.replace(/\/{2,}/g, "/"));
+    <!-- OpenGraph -->
+    <meta property="og:type"              content="website" />
+    <meta property="og:site_name"         content="LogK" />
+    <meta property="og:title"             content={title} />
+    <meta property="og:description"       content={description} />
+    <meta property="og:image"             content={ogImage} />
+    <meta property="og:image:width"       content="1200" />
+    <meta property="og:image:height"      content="630" />
+    {canonicalUrl && <meta property="og:url" content={canonicalUrl} />}
+    <meta property="og:locale"            content="en_US" />
+    <meta property="og:locale:alternate"  content="ko_KR" />
+    <!-- Twitter / X Card -->
+    <meta name="twitter:card"             content="summary_large_image" />
+    <meta name="twitter:title"            content={title} />
+    <meta name="twitter:description"      content={description} />
+    <meta name="twitter:image"            content={ogImage} />
+    <!-- Language-aware JS redirect (faster than meta refresh) -->
+    <script is:inline define:vars={{ basePath, fallbackPath, koPath }}>
+      const base     = basePath;
+      const ko       = koPath;
+      const fallback = fallbackPath;
+      const lang     = navigator.language.toLowerCase();
+      window.location.replace(lang.startsWith("ko") ? ko : fallback);
     </script>
   </head>
-  <body></body>
+  <body>
+    <a href={fallbackPath}>Redirecting to LogK…</a>
+  </body>
 </html>
